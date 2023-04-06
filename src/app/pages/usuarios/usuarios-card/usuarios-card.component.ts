@@ -11,7 +11,7 @@ export class UsuariosCardComponent  implements OnInit {
   @Input() usuario:any;
   constructor(private usuariosService:UsuariosService) { }
 
-  imagem = ''
+  imagem = './../../../../assets/imgs/avatar-do-usuario.png'
 
   ngOnInit() {
     console.log(this.usuario)

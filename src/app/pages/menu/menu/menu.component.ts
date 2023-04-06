@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/core/login/shared/login.service';
@@ -33,11 +34,20 @@ export class MenuComponent implements OnInit {
     console.log(ev);
   }
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: LoginService, private alertController:AlertController) {}
 
   ngOnInit() {
     this.router.navigate(['usuarios'])
   }
 
-  teste() {}
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: 'Confirma o Logout?',
+      buttons: this.alertButtons
+    });
+
+    await alert.present();
+  }
+
 }

@@ -55,7 +55,7 @@ teste
       class="login-button"
       expand="block"
       (click)="login()"
-      [disabled]="!formData.valid"
+      [disabled]="!formData.valid || desabilitaLogin"
       >Login</ion-button
     >
   </div>
