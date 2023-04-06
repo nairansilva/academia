@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "academia-oneforone": {
+      "hosting": {
+        "app": [
+          "academia-oneforone"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "academia-oneforone"
+  }
+}

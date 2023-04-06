@@ -9,6 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideMessaging,getMessaging } from '@angular/fire/messaging';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,9 +28,15 @@ import { AppComponent } from './app.component';
     LoginModule,
     FormsModule,
     ReactiveFormsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideMessaging(() => getMessaging()),
+    provideStorage(() => getStorage()),
   ],
   providers: [
     CommonModule,
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

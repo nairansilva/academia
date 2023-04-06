@@ -11,27 +11,46 @@ import { LoginSuccessInterface } from '../shared/loginSuccess.model';
 })
 export class LoginComponent implements OnInit {
   formData: FormGroup;
+  colorHelp = 'danger';
+  isToastOpen: boolean = false;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService, private router:Router) {
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {
     this.formData = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }
   ngOnInit() {
-    setInterval(()=> {console.log('teste')},5000)
 
   }
 
   login() {
-    this.loginService.login(this.formData.value).subscribe({
-      next: (res: LoginSuccessInterface) => {
-        console.log('loguei', res);
-        this.router.navigate(['usuarios'])
-      },
-      error: (error: any) => {
-        console.error(error);
-      },
-    });
+    this.loginService
+      .login(this.formData.value)
+      .then((res) => {
+        console.log('entrei', res);
+        localStorage.setItem('user', res.user);
+        this.router.navigate(['usuarios']);
+      })
+      .catch((error) => {
+        (this.isToastOpen = true), console.error(error);
+      });
+    // this.loginService.login(this.formData.value).subscribe({
+    //   next: (res: LoginSuccessInterface) => {
+    //     console.log('loguei', res);
+    //     this.router.navigate(['usuarios'])
+    //   },
+    //   error: (error: any) => {
+    //     console.error(error);
+    //   },
+    // });
+  }
+
+  setOpen(showHelp = false) {
+    this.isToastOpen = showHelp;
   }
 }

@@ -2,5 +2,19 @@
   <ion-toolbar>
     <ion-title slot="start">Usuários</ion-title>
   </ion-toolbar>
+  <ion-searchbar
+    [debounce]="1000"
+    (ionChange)="buscaAlunos($event)"
+    id="open-loading"
+  ></ion-searchbar>
 </ion-header>
-<ion-content></ion-content>
+<ion-content>
+  <div *ngFor="let usuario of usuarios">
+    <app-usuarios-card [usuario]="usuario"></app-usuarios-card>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="novoUsuario()" size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

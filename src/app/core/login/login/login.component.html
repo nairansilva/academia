@@ -31,9 +31,11 @@ teste
         <ion-icon name="person" slot="start"></ion-icon>
         <!-- <ion-label position="floating">Usuário</ion-label> -->
         <ion-input
+          type="email"
           label="Usuário"
           label-placement="floating"
           formControlName="email"
+          errorText="Invalid email"
         ></ion-input>
       </ion-item>
 
@@ -57,4 +59,12 @@ teste
       >Login</ion-button
     >
   </div>
+
+  <ion-toast
+    [isOpen]="isToastOpen"
+    message="Usuário não autenticado"
+    [color]="colorHelp"
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>

@@ -35,7 +35,9 @@ export class MenuComponent implements OnInit {
 
   constructor(private router: Router, private loginService: LoginService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.router.navigate(['usuarios'])
+  }
 
   teste() {}
 }
