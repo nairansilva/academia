@@ -1,8 +1,12 @@
+import { AlunosInterface } from './../shared/alunos.model';
 import { UsuariosService } from './../shared/usuarios.service';
 import { PhotoService } from './../../../shared/services/PhotoService.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { LoginService } from 'src/app/core/login/shared/login.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -14,11 +18,18 @@ export class UsuariosFormComponent implements OnInit {
   colorHelp = 'danger';
   isToastOpen: boolean = false;
   messageToast = '';
+  id: string | null;
+  isEdicao: boolean = false;
+
+  loading: any;
 
   constructor(
     private fb: FormBuilder,
+    private loadingCtrl: LoadingController,
     private router: Router,
-    private usuariosService: UsuariosService
+    private route: ActivatedRoute,
+    private usuariosService: UsuariosService,
+    private loginService: LoginService
   ) {
     this.formData = this.fb.group({
       id: [''],
@@ -28,12 +39,25 @@ export class UsuariosFormComponent implements OnInit {
       objetivos: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
+      perfil: ['1', [Validators.required]],
     });
+
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
+    if (this.id) {
+      this.isEdicao = true;
+      this.formData.controls['password'].disable();
+      this.getUsuario();
+    }
+
+    this.validInputs();
+  }
+
+  validInputs() {
     this.formData.controls['telefone'].valueChanges.subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.formData.patchValue(
           {
             telefone: this.transformPhone(res),
@@ -55,22 +79,78 @@ export class UsuariosFormComponent implements OnInit {
     });
   }
 
-  salvar() {
-    this.usuariosService
-      .postAlunos(this.formData.value)
-      .then((res) => {
-        this.isToastOpen = true;
-        this.colorHelp = 'sucess';
-        this.messageToast = 'Cadastro Realizado com Sucesso';
-        this.formData.reset();
-        this.router.navigate(['usuarios']);
-      })
-      .catch((error) => {
-        this.isToastOpen = true;
-        this.colorHelp = 'danger';
-        this.messageToast = 'Erro ao cadastrar usuário';
-        console.error(error);
-      });
+  async getUsuario() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Buscando Usuário...',
+    });
+
+    this.loading.present();
+
+    let doc = await this.usuariosService.getById(String(this.id));
+    this.loading.dismiss();
+    this.editeForm(doc.data(), doc.id);
+  }
+
+  editeForm(usuario: AlunosInterface, id:string): void {
+    this.formData.patchValue({
+      id: id,
+      nome: usuario.nome,
+      telefone: usuario.telefone,
+      idade: usuario.idade,
+      objetivos: usuario.objetivos,
+      email: usuario.email,
+      password: '******',
+      perfil:usuario.perfil
+    });
+  }
+
+  async salvar() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Salvando...',
+    });
+
+    this.loading.present();
+
+    if (!this.isEdicao) {
+      await this.usuariosService
+        .postAluno(this.formData.value)
+        .then((res) => {
+          this.loading.dismiss();
+          this.loginService.creatUser(this.formData.value);
+          this.isToastOpen = true;
+          this.colorHelp = 'sucess';
+          this.messageToast = 'Cadastro Realizado com Sucesso';
+          this.formData.reset();
+          this.router.navigate(['usuarios']);
+        })
+        .catch((error) => {
+          this.loading.dismiss();
+          this.isToastOpen = true;
+          this.colorHelp = 'danger';
+          this.messageToast = 'Erro ao cadastrar usuário';
+          console.error(error);
+        });
+    } else {
+      await this.usuariosService
+        let alunoSemSenha = this.formData.value
+        delete alunoSemSenha.password;
+        this.usuariosService.putAluno(alunoSemSenha, alunoSemSenha.id)
+        .then((res) => {
+          this.loading.dismiss();
+          this.isToastOpen = true;
+          this.colorHelp = 'sucess';
+          this.messageToast = 'Cadastro Alterado com Sucesso';
+          this.formData.reset();
+          this.router.navigate(['usuarios']);
+        })
+        .catch((error) => {
+          this.loading.dismiss();
+          this.isToastOpen = true;
+          this.colorHelp = 'danger';
+          this.messageToast = 'Erro editar usuário';
+          console.error(error);
+        });
+    }
   }
 
   setOpen(option: boolean) {

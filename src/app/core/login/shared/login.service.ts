@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -56,6 +57,14 @@ export class LoginService {
       login.password
     );
     // return of({ name: '', jwtToken: '' });
+  }
+
+  creatUser(login: LoginInterface) {
+    createUserWithEmailAndPassword(
+      this.angularFireAuth,
+      login.email,
+      login.password
+    );
   }
 
   logout(): void {

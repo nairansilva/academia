@@ -5,5 +5,6 @@ export interface AlunosInterface {
   email: string;
   telefone: number;
   idade:number;
-  objetivos:string
+  objetivos:string;
+  perfil:number
 }

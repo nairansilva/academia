@@ -6,7 +6,6 @@
 <ion-content>
   <div [formGroup]="formData">
     <ion-item class="ion-item">
-      <ion-icon name="person" slot="start"></ion-icon>
       <ion-input
         type="text"
         label="Nome"
@@ -16,7 +15,6 @@
     </ion-item>
 
     <ion-item class="ion-item">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
       <ion-input
         type="tel"
         formControlName="telefone"
@@ -27,7 +25,6 @@
     </ion-item>
 
     <ion-item class="ion-item">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
       <ion-input
         type="tel"
         maxlength="2"
@@ -38,7 +35,6 @@
     </ion-item>
 
     <ion-item class="ion-item">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
       <ion-input
         type="text"
         formControlName="objetivos"
@@ -48,7 +44,6 @@
     </ion-item>
 
     <ion-item class="ion-item">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
       <ion-input
         type="text"
         formControlName="email"
@@ -58,14 +53,30 @@
     </ion-item>
 
     <ion-item class="ion-item">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
       <ion-input
+        [disabled]="true"
         type="password"
         formControlName="password"
         label="Senha"
         label-placement="floating"
+        minlength="6"
+        errorText="A senha deve possuir pelo menos 6 caracteres"
       ></ion-input>
     </ion-item>
+
+      <!-- <ion-icon name="lock-closed" slot="start"></ion-icon> -->
+      <ion-list>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Tipo de Usuário"
+            formControlName="perfil"
+          >
+            <ion-select-option value="1" label="Usuário">Usuário</ion-select-option>
+            <ion-select-option value="2" label="Administrador">Administrador</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
   </div>
 
   <div class="ion-text-end">
