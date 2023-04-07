@@ -1,3 +1,20 @@
-<p>
-  treinos-card works!
-</p>
+<ion-card>
+  <ion-card-header>
+    <ion-avatar>
+      <img alt="foto do treino" [src]="imagem" />
+    </ion-avatar>
+    <ion-card-title>{{treino.nome}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-icon name="reader" slot="start"></ion-icon>
+        <ion-label>{{treino.equipamento}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+  <div class="ion-text-end">
+    <ion-button color="primary" (click)="editar()">Editar</ion-button>
+    <ion-button color="danger" (click)="excluir()">Excluir</ion-button>
+  </div>
+</ion-card>

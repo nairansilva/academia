@@ -10,7 +10,7 @@ import { InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss'],
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent {
   constructor(
     private usuariosService: UsuariosService,
     private storageService: StorageService,
@@ -24,7 +24,15 @@ export class UsuariosComponent implements OnInit {
   loading: any;
   usuarios: AlunosInterface[] = [];
 
-  ngOnInit() {
+  // ngOnInit() {
+  //   console.log('to no usuarios')
+  //   this.listaAlunos();
+  // }
+
+  ionViewWillEnter() {
+    // this.ngOnInit();
+    this.pagina = 1;
+    this.usuarios = [];
     this.listaAlunos();
   }
 
@@ -36,16 +44,22 @@ export class UsuariosComponent implements OnInit {
     const lastName = this.usuarios[this.usuarios.length - 1]
       ? this.usuarios[this.usuarios.length - 1].nome
       : '';
-    this.usuariosService.getAlunos(this.filtro, this.pagina, lastName).subscribe({
-      next: (res) => {
-        this.usuarios = this.usuarios.concat(res);
-        if (this.loading) this.loading.dismiss();
-      },
-      error: (error) => {
-        console.error(error);
-        this.loading.dismiss();
-      },
-    });
+    this.usuariosService
+      .getAlunos(this.filtro, this.pagina, lastName)
+      .subscribe({
+        next: (res) => {
+          this.pagina === 1
+            ? (this.usuarios = res)
+            : (this.usuarios = this.usuarios.concat(res));
+          // this.usuarios = res
+          // this.usuarios = this.usuarios.concat(res);
+          if (this.loading) this.loading.dismiss();
+        },
+        error: (error) => {
+          console.error(error);
+          this.loading.dismiss();
+        },
+      });
   }
 
   async buscaAlunos(busca: any) {
@@ -65,10 +79,9 @@ export class UsuariosComponent implements OnInit {
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 500);
-
   }
 
-  async registroExcluido(){
+  async registroExcluido() {
     this.loading = await this.loadingCtrl.create({
       message: 'Atualizando Usuários...',
     });

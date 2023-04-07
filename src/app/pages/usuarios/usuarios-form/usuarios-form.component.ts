@@ -46,6 +46,7 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('to no form')
     if (this.id) {
       this.isEdicao = true;
       this.formData.controls['password'].disable();

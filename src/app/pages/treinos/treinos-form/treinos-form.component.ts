@@ -78,7 +78,6 @@ export class TreinosFormComponent  implements OnInit {
         .postTreino(this.formData.value)
         .then((res) => {
           this.loading.dismiss();
-          this.loginService.creatUser(this.formData.value);
           this.isToastOpen = true;
           this.colorHelp = 'sucess';
           this.messageToast = 'Cadastro Realizado com Sucesso';

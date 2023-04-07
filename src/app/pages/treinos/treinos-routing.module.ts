@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: TreinosComponent,
   },
-  { path: 'form', component: TreinosComponent },
+  { path: 'form', component: TreinosFormComponent },
   { path: 'form/:id', component: TreinosFormComponent },
 ];
 
