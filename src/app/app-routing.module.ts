@@ -1,3 +1,4 @@
+import { ResetPasswordComponent } from './core/login/reset-password/reset-password.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
@@ -8,11 +9,15 @@ export const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./pages/menu/menu.module').then((m) => m.MenuModule),
-      ...canActivate(() => redirectUnauthorizedTo(['/login'])),
+    ...canActivate(() => redirectUnauthorizedTo(['/login'])),
   },
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'resetpassword',
+    component: ResetPasswordComponent,
   },
 ];
 @NgModule({

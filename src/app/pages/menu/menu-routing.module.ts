@@ -15,11 +15,13 @@ const routes: Routes = [
         path: 'usuarios',
         loadChildren: () =>
           import('./../usuarios/usuarios.module').then((m) => m.UsuariosModule),
+          canActivate:[AuthGuard]
       },
       {
         path: 'treinos',
         loadChildren: () =>
           import('./../treinos/treinos.module').then((m) => m.TreinosModule),
+          canActivate:[AuthGuard]
       },
       {
         path: 'pagamentos',
@@ -27,6 +29,7 @@ const routes: Routes = [
           import('./../pagamentos/pagamentos.module').then(
             (m) => m.PagamentosModule
           ),
+          canActivate:[AuthGuard]
       },
     ],
   },

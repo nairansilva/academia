@@ -138,7 +138,7 @@ export class UsuariosFormComponent implements OnInit {
         .then((res) => {
           this.loading.dismiss();
           this.isToastOpen = true;
-          this.colorHelp = 'sucess';
+          this.colorHelp = 'success';
           this.messageToast = 'Cadastro Alterado com Sucesso';
           this.formData.reset();
           this.router.navigate(['usuarios']);

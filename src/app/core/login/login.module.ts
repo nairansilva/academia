@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -13,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule
   ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ResetPasswordComponent
   ],
 })
 export class LoginModule { }

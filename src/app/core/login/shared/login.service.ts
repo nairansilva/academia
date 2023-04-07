@@ -11,6 +11,7 @@ import {
   onAuthStateChanged,
   signOut,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -19,6 +20,7 @@ import {
 export class LoginService {
   userData = {};
   private token = '';
+  protected isAdmin = false;
 
   user$: Observable<any>;
   constructor(protected httpClient: HttpClient, private angularFireAuth: Auth) {
@@ -27,7 +29,10 @@ export class LoginService {
     this.user$.subscribe((aUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
       // console.log('tete', aUser);
-      localStorage.setItem('user', JSON.stringify(user));
+      if (aUser?.email?.toLowerCase().includes('nairan')) {
+        this.isAdmin = true;
+      }
+      localStorage.setItem('user', JSON.stringify(aUser));
     });
 
     // this.AngularFireAuth
@@ -45,9 +50,13 @@ export class LoginService {
     // });
   }
 
-  get isLoggedIn(): boolean {
+  get userLoggin(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user;
+  }
+
+  get isUserAdmin(): boolean{
+    return this.isAdmin;
   }
 
   login(login: LoginInterface): Promise<any> {
@@ -74,7 +83,6 @@ export class LoginService {
   }
 
   protected setToken(loginSucces: LoginSuccessInterface): void {
-    console.log(loginSucces);
     sessionStorage.setItem('tokenPrinterControl', loginSucces.jwtToken);
     sessionStorage.setItem('emailUser', loginSucces.name);
   }
@@ -83,5 +91,9 @@ export class LoginService {
     return sessionStorage.getItem('tokenPrinterControl')
       ? String(sessionStorage.getItem('tokenPrinterControl'))
       : '';
+  }
+
+  fotgotPassword() {
+    sendPasswordResetEmail(this.angularFireAuth, 'nairan.asilva@gmail.com');
   }
 }

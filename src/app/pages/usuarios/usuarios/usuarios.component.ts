@@ -29,7 +29,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   novoUsuario() {
-    console.log('oi');
     this.router.navigate(['/usuarios/form']);
   }
 
@@ -39,7 +38,6 @@ export class UsuariosComponent implements OnInit {
       : '';
     this.usuariosService.getAlunos(this.filtro, this.pagina, lastName).subscribe({
       next: (res) => {
-        console.log('o que chegou', res);
         this.usuarios = this.usuarios.concat(res);
         if (this.loading) this.loading.dismiss();
       },
@@ -68,5 +66,15 @@ export class UsuariosComponent implements OnInit {
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 500);
 
+  }
+
+  async registroExcluido(){
+    this.loading = await this.loadingCtrl.create({
+      message: 'Atualizando Usuários...',
+    });
+
+    this.loading.present();
+    this.usuarios = [];
+    this.listaAlunos();
   }
 }

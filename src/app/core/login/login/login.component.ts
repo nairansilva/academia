@@ -30,11 +30,16 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit() {}
 
+  async senha(){
+    this.router.navigate(['resetpassword'])
+  }
+
   async login() {
     this.desabilitaLogin = true;
     this.loading = await this.loadingCtrl.create({
       message: 'Realizando Login...',
     });
+
 
     this.loading.present();
 
@@ -42,7 +47,6 @@ export class LoginComponent implements OnInit {
       .login(this.formData.value)
       .then((res) => {
         this.desabilitaLogin = false;
-        console.log('entrei', res);
         localStorage.setItem('user', res.user);
         this.loading.dismiss();
         this.router.navigate(['usuarios']);

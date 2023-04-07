@@ -1,5 +1,5 @@
 import { UsuariosService } from './../shared/usuarios.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { getDownloadURL } from 'firebase/storage';
 import { Router } from '@angular/router';
 import {
@@ -15,6 +15,8 @@ import {
 })
 export class UsuariosCardComponent implements OnInit {
   @Input() usuario: any;
+  @Output() registroExcluido = new EventEmitter();
+
   constructor(
     private usuariosService: UsuariosService,
     private router: Router,
@@ -43,7 +45,6 @@ export class UsuariosCardComponent implements OnInit {
   imagem = './../../../../assets/imgs/avatar-do-usuario.png';
 
   ngOnInit() {
-    console.log(this.usuario);
     this.usuariosService
       .getPictures(this.usuario.id)
       .then((res) => {
@@ -94,5 +95,8 @@ export class UsuariosCardComponent implements OnInit {
     });
 
     await toast.present();
+
+    this.registroExcluido.emit();
+
   }
 }

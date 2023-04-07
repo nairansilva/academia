@@ -31,7 +31,6 @@ export class MenuComponent implements OnInit {
   ];
 
   setResult(ev: any) {
-    console.log(ev);
   }
 
   constructor(private router: Router, private loginService: LoginService, private alertController:AlertController) {}

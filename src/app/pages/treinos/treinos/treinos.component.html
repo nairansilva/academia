@@ -1,3 +1,24 @@
-<p>
-  treinos works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">Treinos</ion-title>
+  </ion-toolbar>
+  <ion-searchbar
+    [debounce]="1000"
+    (ionChange)="buscaTreinos($event)"
+    id="open-loading"
+    placeholder="Busca de Alunos"
+  ></ion-searchbar>
+</ion-header>
+<ion-content>
+  <div *ngFor="let treino of treinos">
+    <app-treinos-card [treino]="treino" (registroExcluido)="registroExcluido()"></app-treinos-card>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="novoTreino()" size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

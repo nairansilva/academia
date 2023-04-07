@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">Novo Treino</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div [formGroup]="formData">
+    <ion-item class="ion-item">
+      <ion-input
+        type="text"
+        label="Nome"
+        label-placement="floating"
+        formControlName="nome"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-item">
+      <ion-input
+        type="Equipamento"
+        formControlName="equipamento"
+        label="Equipamento"
+        label-placement="floating"
+      ></ion-input>
+    </ion-item>
+
+  </div>
+
+  <div class="ion-text-end">
+    <ion-button
+      class="login-button"
+      expand="block"
+      (click)="salvar()"
+      color="primary"
+      [disabled]="!formData.valid"
+      >Salvar</ion-button
+    >
+    <ion-button
+      class="cancel-button"
+      expand="block"
+      (click)="cancelar()"
+      color="danger"
+      >Cancelar</ion-button
+    >
+  </div>
+</ion-content>
+<!-- <ion-toast
+[isOpen]="isToastOpen"
+message="Usuário não autenticado"
+[color]="colorHelp"
+[duration]="5000"
+(didDismiss)="setOpen(false)"
+></ion-toast> -->
