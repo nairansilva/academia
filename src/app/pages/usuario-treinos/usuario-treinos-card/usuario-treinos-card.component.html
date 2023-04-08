@@ -1,19 +1,20 @@
 <ion-card>
   <ion-card-header>
-    <ion-avatar>
-      <img alt="foto do treino" [src]="imagem" />
-    </ion-avatar>
-    <ion-card-title>{{ treino.nome }}</ion-card-title>
+    <ion-card-title>{{ usuarioXTreino.nome }}</ion-card-title>
   </ion-card-header>
   <ion-card-content>
     <ion-list>
       <ion-item>
         <ion-icon name="reader" slot="start"></ion-icon>
-        <ion-label><b>Equipamento:</b>{{ treino.equipamento }}</ion-label>
+        <ion-label><b>Objeticvos:</b>{{ usuarioXTreino.objetivos }}</ion-label>
       </ion-item>
     </ion-list>
   </ion-card-content>
   <div class="ion-text-end">
+    <ion-button (click)="treinos()" color="secondary">
+      <ion-icon slot="end" name="barbell"></ion-icon>
+      Exercícios</ion-button
+    >
     <ion-button color="primary" (click)="editar()">
       <ion-icon slot="end" name="build"></ion-icon>
       Editar</ion-button

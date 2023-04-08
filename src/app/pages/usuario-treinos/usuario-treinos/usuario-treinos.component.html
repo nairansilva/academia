@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">Treinos</ion-title>
+    <ion-title slot="start">Usuário x Treinos</ion-title>
   </ion-toolbar>
-  <ion-searchbar
+  <!-- <ion-searchbar
     [debounce]="1000"
-    (ionChange)="buscaTreinos($event)"
+    (ionChange)="buscaAlunoXTreino($event)"
     id="open-loading"
-    placeholder="Busca de Treinos"
-  ></ion-searchbar>
+    placeholder="Busca de Alunos"
+  ></ion-searchbar> -->
 </ion-header>
 <ion-content>
-  <div *ngFor="let treino of treinos">
-    <app-treinos-card [treino]="treino" (registroExcluido)="registroExcluido()"></app-treinos-card>
+  <div *ngFor="let usuarioXTreino of usuarioXTreinos">
+    <app-usuario-treinos-card [usuarioXTreino]="usuarioXTreino" (registroExcluido)="registroExcluido()"></app-usuario-treinos-card>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="novoTreino()" size="small">

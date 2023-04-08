@@ -77,7 +77,7 @@ export class TreinosComponent implements OnInit {
 
   async registroExcluido() {
     this.loading = await this.loadingCtrl.create({
-      message: 'Atualizando Usuários...',
+      message: 'Atualizando Treinos...',
     });
 
     this.loading.present();

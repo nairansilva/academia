@@ -1,24 +1,21 @@
-import { Router } from '@angular/router';
-import { TreinosService } from './../shared/treinos.service';
+import { UsuarioTreinoInterface } from './../shared/usuario-treinos.model';
+import { UsuarioTreinosService } from './../shared/usuario-treino.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { getDownloadURL } from '@angular/fire/storage';
-import {
-  AlertController,
-  LoadingController,
-  ToastController,
-} from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-treinos-card',
-  templateUrl: './treinos-card.component.html',
-  styleUrls: ['./treinos-card.component.scss'],
+  selector: 'app-usuario-treinos-card',
+  templateUrl: './usuario-treinos-card.component.html',
+  styleUrls: ['./usuario-treinos-card.component.scss'],
 })
-export class TreinosCardComponent implements OnInit {
-  @Input() treino: any;
+export class UsuarioTreinosCardComponent  implements OnInit {
+
+  @Input() usuarioXTreino: UsuarioTreinoInterface;
   @Output() registroExcluido = new EventEmitter();
 
   constructor(
-    private treinosService: TreinosService,
+    private usuarioTreinosService: UsuarioTreinosService,
     private router: Router,
     private loadingCtrl: LoadingController,
     private alertController: AlertController,
@@ -37,33 +34,20 @@ export class TreinosCardComponent implements OnInit {
       text: 'OK',
       role: 'confirm',
       handler: () => {
-        this.deletarUsuario();
+        this.deletarTreino();
       },
     },
   ];
 
-  imagem = './../../../../assets/imgs/avatar-do-usuario.png';
-
   ngOnInit() {
-    this.treinosService
-      .getPictures(this.treino.id)
-      .then((res) => {
-        const imgProfile = res.items.filter((item: any) =>
-          item.name.includes(this.treino.id)
-        );
-        if (imgProfile.length > 0) {
-          const url = getDownloadURL(imgProfile[0]);
-          url.then((res) => {
-            this.imagem = res;
-          });
-        }
-      })
-      .catch((error) => console.error(error));
   }
 
   editar() {
-    console.log(this.treino)
-    this.router.navigate(['treinos/form/', this.treino.id]);
+    this.router.navigate([`usuariotreinos/${this.usuarioXTreino.idUsuario}/form`, this.usuarioXTreino.id]);
+  }
+
+  treinos(){
+
   }
 
   async excluir() {
@@ -77,13 +61,13 @@ export class TreinosCardComponent implements OnInit {
     await alert.present();
   }
 
-  async deletarUsuario() {
+  async deletarTreino() {
     const loading = await this.loadingCtrl.create({
       message: 'Excluíndo Treino...',
     });
 
     loading.present();
-    await this.treinosService.deleteTreino(this.treino.id);
+    await this.usuarioTreinosService.deleteAlunoTreinos(this.usuarioXTreino.id);
     loading.dismiss();
     const toast = await this.toastController.create({
       message: 'Treino Exluído com Sucesso!',

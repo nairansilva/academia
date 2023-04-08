@@ -31,6 +31,14 @@ const routes: Routes = [
           ),
           canActivate:[AuthGuard]
       },
+      {
+        path: 'usuariotreinos',
+        loadChildren: () =>
+          import('./../usuario-treinos/usuario-treinos.module').then(
+            (m) => m.UsuarioTreinosModule
+          ),
+          canActivate:[AuthGuard]
+      },
     ],
   },
 ];

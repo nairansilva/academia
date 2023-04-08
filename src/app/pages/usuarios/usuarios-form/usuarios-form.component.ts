@@ -46,7 +46,7 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('to no form')
+    console.log('to no form');
     if (this.id) {
       this.isEdicao = true;
       this.formData.controls['password'].disable();
@@ -92,7 +92,7 @@ export class UsuariosFormComponent implements OnInit {
     this.editeForm(doc.data(), doc.id);
   }
 
-  editeForm(usuario: AlunosInterface, id:string): void {
+  editeForm(usuario: AlunosInterface, id: string): void {
     this.formData.patchValue({
       id: id,
       nome: usuario.nome,
@@ -101,7 +101,7 @@ export class UsuariosFormComponent implements OnInit {
       objetivos: usuario.objetivos,
       email: usuario.email,
       password: '******',
-      perfil:usuario.perfil
+      perfil: usuario.perfil,
     });
   }
 
@@ -113,49 +113,64 @@ export class UsuariosFormComponent implements OnInit {
     this.loading.present();
 
     if (!this.isEdicao) {
-      await this.usuariosService
-        .postAluno(this.formData.value)
-        .then((res) => {
-          this.loading.dismiss();
-          this.loginService.creatUser(this.formData.value);
-          this.isToastOpen = true;
-          this.colorHelp = 'sucess';
-          this.messageToast = 'Cadastro Realizado com Sucesso';
-          this.formData.reset();
-          this.router.navigate(['usuarios']);
-        })
-        .catch((error) => {
-          this.loading.dismiss();
-          this.isToastOpen = true;
-          this.colorHelp = 'danger';
-          this.messageToast = 'Erro ao cadastrar usuário';
-          console.error(error);
-        });
+      this.postAlunos();
     } else {
-      await this.usuariosService
-        let alunoSemSenha = this.formData.value
-        delete alunoSemSenha.password;
-        this.usuariosService.putAluno(alunoSemSenha, alunoSemSenha.id)
-        .then((res) => {
-          this.loading.dismiss();
-          this.isToastOpen = true;
-          this.colorHelp = 'success';
-          this.messageToast = 'Cadastro Alterado com Sucesso';
-          this.formData.reset();
-          this.router.navigate(['usuarios']);
-        })
-        .catch((error) => {
-          this.loading.dismiss();
-          this.isToastOpen = true;
-          this.colorHelp = 'danger';
-          this.messageToast = 'Erro editar usuário';
-          console.error(error);
-        });
+      this.putAlunos();
     }
   }
 
   setOpen(option: boolean) {
     this.isToastOpen = option;
+  }
+
+
+
+  async putAlunos() {
+    await this.usuariosService
+      .postAluno(this.formData.value)
+      .then((res) => {
+        this.loading.dismiss();
+        this.loginService.creatUser(this.formData.value);
+        this.isToastOpen = true;
+        this.colorHelp = 'sucess';
+        this.messageToast = 'Cadastro Realizado com Sucesso';
+        this.formData.reset();
+        this.router.navigate(['usuarios']);
+      })
+      .catch((error) => {
+        this.loading.dismiss();
+        this.isToastOpen = true;
+        this.colorHelp = 'danger';
+        this.messageToast = 'Erro ao cadastrar usuário';
+        console.error(error);
+      });
+  }
+
+  async postAlunos() {
+    await this.usuariosService;
+    let alunoSemSenha = this.formData.value;
+    delete alunoSemSenha.password;
+    this.usuariosService
+      .putAluno(alunoSemSenha, alunoSemSenha.id)
+      .then((res) => {
+        this.loading.dismiss();
+        this.isToastOpen = true;
+        this.colorHelp = 'success';
+        this.messageToast = 'Cadastro Alterado com Sucesso';
+        this.formData.reset();
+        this.router.navigate(['usuarios']);
+      })
+      .catch((error) => {
+        this.loading.dismiss();
+        this.isToastOpen = true;
+        this.colorHelp = 'danger';
+        this.messageToast = 'Erro editar usuário';
+        console.error(error);
+      });
+  }
+
+  treinos() {
+    this.router.navigate([`usuariotreinos/${this.id}`])
   }
 
   cancelar() {

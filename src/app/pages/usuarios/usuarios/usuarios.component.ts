@@ -33,6 +33,7 @@ export class UsuariosComponent {
     // this.ngOnInit();
     this.pagina = 1;
     this.usuarios = [];
+    this.router.navigate(['/usuarios']);
     this.listaAlunos();
   }
 
