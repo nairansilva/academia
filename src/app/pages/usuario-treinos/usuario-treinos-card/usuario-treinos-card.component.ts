@@ -1,21 +1,31 @@
+import { TreinoInterface } from './../../treinos/shared/treinos.model';
+import { TreinosService } from './../../treinos/shared/treinos.service';
 import { UsuarioTreinoInterface } from './../shared/usuario-treinos.model';
 import { UsuarioTreinosService } from './../shared/usuario-treino.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  ToastController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-usuario-treinos-card',
   templateUrl: './usuario-treinos-card.component.html',
   styleUrls: ['./usuario-treinos-card.component.scss'],
 })
-export class UsuarioTreinosCardComponent  implements OnInit {
-
+export class UsuarioTreinosCardComponent implements OnInit {
   @Input() usuarioXTreino: UsuarioTreinoInterface;
   @Output() registroExcluido = new EventEmitter();
 
+  isModalOpen = false;
+  loading: any;
+  treinos:TreinoInterface[];
+
   constructor(
     private usuarioTreinosService: UsuarioTreinosService,
+    private treinosService: TreinosService,
     private router: Router,
     private loadingCtrl: LoadingController,
     private alertController: AlertController,
@@ -39,15 +49,37 @@ export class UsuarioTreinosCardComponent  implements OnInit {
     },
   ];
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   editar() {
-    this.router.navigate([`usuariotreinos/${this.usuarioXTreino.idUsuario}/form`, this.usuarioXTreino.id]);
+    this.router.navigate([
+      `usuariotreinos/${this.usuarioXTreino.idUsuario}/form`,
+      this.usuarioXTreino.id,
+    ]);
   }
 
-  treinos(){
+  async listaTreinos() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Buscando Treinos...',
+    });
 
+    this.loading.present();
+
+    this.treinosService.getTreinos().subscribe({
+      next: (res) => {
+        this.treinos = res;
+        this.setOpen(true);
+        if (this.loading) this.loading.dismiss();
+      },
+      error: (error) => {
+        console.error(error);
+        this.loading.dismiss();
+      },
+    });
+  }
+
+  setOpen(option: boolean) {
+    this.isModalOpen = option;
   }
 
   async excluir() {
