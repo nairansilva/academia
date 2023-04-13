@@ -3,4 +3,5 @@ export interface UsuarioTreinoInterface {
   idUsuario:string;
   nome: string;
   objetivos:string;
+  check?:boolean
 }

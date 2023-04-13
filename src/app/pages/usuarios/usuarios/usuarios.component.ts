@@ -24,9 +24,13 @@ export class UsuariosComponent {
   loading: any;
   usuarios: AlunosInterface[] = [];
 
-  // ngOnInit() {
-  //   console.log('to no usuarios')
-  //   this.listaAlunos();
+  ngOnInit() {
+    console.log('to no usuarios')
+    this.listaAlunos();
+  }
+
+  // ionViewDidEnter(){
+  //   console.log("Macaco véio")
   // }
 
   ionViewWillEnter() {

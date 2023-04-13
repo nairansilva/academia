@@ -62,7 +62,7 @@ export class TreinosCardComponent implements OnInit {
   }
 
   editar() {
-    console.log(this.treino)
+    // console.log(this.treino)
     this.router.navigate(['treinos/form/', this.treino.id]);
   }
 

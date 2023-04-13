@@ -1,8 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">Novo Usuário</ion-title>
+    <ion-title slot="start">{{tituloPagina}}</ion-title>
   </ion-toolbar>
 </ion-header>
+<!-- <div *ngIf="isEdicao">
+  <ion-segment value="default">
+    <ion-segment-button value="default">
+      <ion-label>Dados Cadastrais</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="segment">
+      <ion-label>Acompanhamento</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div> -->
 <ion-content>
   <div [formGroup]="formData">
     <ion-item class="ion-item">

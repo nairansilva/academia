@@ -29,9 +29,9 @@ export class LoginService {
     this.user$.subscribe((aUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
       // console.log('tete', aUser);
-      if (aUser?.email?.toLowerCase().includes('nairan')) {
+      // if (aUser?.email?.toLowerCase().includes('nairan')) {
         this.isAdmin = true;
-      }
+      // }
       localStorage.setItem('user', JSON.stringify(aUser));
     });
 

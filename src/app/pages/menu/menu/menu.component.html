@@ -2,15 +2,15 @@
 
 <ion-tabs>
   <ion-tab-bar slot="bottom" [selectedTab]="true">
-    <ion-tab-button tab="usuarios">
+    <ion-tab-button tab="usuarios" (click)="goTo('usuarios')">
       <ion-icon name="person"></ion-icon>
       Usuários
     </ion-tab-button>
-    <ion-tab-button tab="treinos">
+    <ion-tab-button tab="treinos" (click)="goTo('treinos')">
       <ion-icon name="fitness"></ion-icon>
       Treinos
     </ion-tab-button>
-    <ion-tab-button tab="pagamentos">
+    <ion-tab-button tab="pagamentos" (click)="goTo('pagamentos')">
       <ion-icon name="cash"></ion-icon>
       Pagamentos
     </ion-tab-button>

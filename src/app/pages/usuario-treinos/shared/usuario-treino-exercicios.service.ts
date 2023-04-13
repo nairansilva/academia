@@ -19,29 +19,46 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
+import { UsuarioTreinoExerciciosInterface } from './usuario-treinos-exercicios.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsuarioTreinosService {
+export class UsuarioTreinosExerciciosService {
   constructor(
     private firestore: Firestore,
     private storageService: StorageService
   ) {}
 
-  private dbName = 'usuario-treinos-exercicios'
+  private dbName = 'usuario-treinos-exercicios';
 
-  getAlunoTreinosExercicio(filtro = ''): Observable<UsuarioTreinoInterface[]> {
+  getAlunoTreinosExercicioByAluno(
+    usuario = '',
+  ): Observable<UsuarioTreinoExerciciosInterface[]> {
     const usuarioTreinos = collection(this.firestore, this.dbName);
-    const pageSize = 10;
-    let organizationsQuery:any;
+    let organizationsQuery: any;
 
-      organizationsQuery = query(
-        usuarioTreinos,
-        where('idUsuario',"==",filtro),
-      );
+    organizationsQuery = query(
+      usuarioTreinos,
+      where('idUsuario', '==', usuario),
+    );
     return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
-    UsuarioTreinoInterface[]
+      UsuarioTreinoExerciciosInterface[]
+    >;
+  }
+
+  getAlunoTreinosExercicioByTreino(
+    treino = '',
+  ): Observable<UsuarioTreinoExerciciosInterface[]> {
+    const usuarioTreinos = collection(this.firestore, this.dbName);
+    let organizationsQuery: any;
+
+    organizationsQuery = query(
+      usuarioTreinos,
+      where('idTreino', '==', treino),
+    );
+    return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
+      UsuarioTreinoExerciciosInterface[]
     >;
   }
 
@@ -51,8 +68,9 @@ export class UsuarioTreinosService {
     return getDoc(placeRef);
   }
 
-
-  postAlunoTreinosExercicios(aluno: UsuarioTreinoInterface): Promise<any> {
+  postAlunoTreinosExercicios(
+    aluno: UsuarioTreinoExerciciosInterface
+  ): Promise<any> {
     // [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10].forEach(async (element,index) => {
     //   const usuarioTreinos = collection(this.firestore, 'usuarioTreinos');
     //   aluno= {

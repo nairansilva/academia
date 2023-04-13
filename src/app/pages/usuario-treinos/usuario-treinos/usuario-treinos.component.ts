@@ -1,3 +1,4 @@
+import { LoginService } from 'src/app/core/login/shared/login.service';
 import { UsuarioTreinosService } from './../shared/usuario-treino.service';
 import { UsuarioTreinoInterface } from './../shared/usuario-treinos.model';
 import { Component, OnInit } from '@angular/core';
@@ -12,14 +13,17 @@ import { InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 export class UsuarioTreinosComponent implements OnInit {
   usuarioXTreinos: UsuarioTreinoInterface[] = [];
   idUsuario: string | null;
+  isAdmin = false;
 
   constructor(
     private router: Router,
     private usuarioTreinosService: UsuarioTreinosService,
+    private loginService:LoginService,
     private loadingCtrl: LoadingController,
     private route: ActivatedRoute
   ) {
     this.idUsuario = this.route.snapshot.paramMap.get('idUsuario');
+    this.isAdmin = this.loginService.isUserAdmin;
   }
 
   filtro = '';
@@ -50,6 +54,10 @@ export class UsuarioTreinosComponent implements OnInit {
 
   novoTreino() {
     this.router.navigate([`usuariotreinos/${this.idUsuario}/form`]);
+  }
+
+  voltar(){
+    this.router.navigate([`usuarios/form/${this.idUsuario}` ])
   }
 
   async registroExcluido() {

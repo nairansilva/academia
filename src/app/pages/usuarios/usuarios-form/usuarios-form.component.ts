@@ -20,6 +20,7 @@ export class UsuariosFormComponent implements OnInit {
   messageToast = '';
   id: string | null;
   isEdicao: boolean = false;
+  tituloPagina = 'Novo Usuário';
 
   loading: any;
 
@@ -46,9 +47,10 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('to no form');
+    // console.log('to no form');
     if (this.id) {
       this.isEdicao = true;
+      this.tituloPagina = 'Edição de Usuário';
       this.formData.controls['password'].disable();
       this.getUsuario();
     }
@@ -123,8 +125,6 @@ export class UsuariosFormComponent implements OnInit {
     this.isToastOpen = option;
   }
 
-
-
   async putAlunos() {
     await this.usuariosService
       .postAluno(this.formData.value)
@@ -170,7 +170,7 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   treinos() {
-    this.router.navigate([`usuariotreinos/${this.id}`])
+    this.router.navigate([`usuariotreinos/${this.id}`]);
   }
 
   cancelar() {

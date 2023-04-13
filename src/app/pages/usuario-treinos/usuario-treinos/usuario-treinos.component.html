@@ -11,7 +11,10 @@
 </ion-header>
 <ion-content>
   <div *ngFor="let usuarioXTreino of usuarioXTreinos">
-    <app-usuario-treinos-card [usuarioXTreino]="usuarioXTreino" (registroExcluido)="registroExcluido()"></app-usuario-treinos-card>
+    <app-usuario-treinos-card
+      [usuarioXTreino]="usuarioXTreino"
+      (registroExcluido)="registroExcluido()"
+    ></app-usuario-treinos-card>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="novoTreino()" size="small">
@@ -21,4 +24,15 @@
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <ion-button
+    *ngIf="isAdmin"
+    class="cancel.button"
+    expand="block"
+    (click)="voltar()"
+    color="danger"
+  >
+    <ion-icon slot="end" name="arrow-back"></ion-icon>
+    Voltar</ion-button
+  >
 </ion-content>

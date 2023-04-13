@@ -19,6 +19,7 @@ export class UsuarioTreinosFormComponent implements OnInit {
   idUsuario: string | null;
   idTreino: string | null;
   isEdicao: boolean = false;
+  tituloDaPagina = 'Novo Treino do Usuário';
 
   loading: any;
 
@@ -43,6 +44,7 @@ export class UsuarioTreinosFormComponent implements OnInit {
   ngOnInit(): void {
     if (this.idTreino) {
       this.isEdicao = true;
+      this.tituloDaPagina = 'Edição do Treino';
       this.getTreino();
     }
   }

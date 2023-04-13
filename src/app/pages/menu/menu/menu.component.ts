@@ -30,6 +30,10 @@ export class MenuComponent implements OnInit {
     },
   ];
 
+  goTo(page:string){
+    this.router.navigate([page])
+  }
+
   setResult(ev: any) {
   }
 
