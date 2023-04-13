@@ -10,6 +10,9 @@
   ></ion-searchbar> -->
 </ion-header>
 <ion-content>
+  <div *ngIf="usuarioXTreinos.length === 0">
+    <p>Não foram encontrados treinos para o usuário.</p>
+  </div>
   <div *ngFor="let usuarioXTreino of usuarioXTreinos">
     <app-usuario-treinos-card
       [usuarioXTreino]="usuarioXTreino"
