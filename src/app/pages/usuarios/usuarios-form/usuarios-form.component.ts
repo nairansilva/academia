@@ -125,7 +125,7 @@ export class UsuariosFormComponent implements OnInit {
     this.isToastOpen = option;
   }
 
-  async putAlunos() {
+  async postAlunos() {
     await this.usuariosService
       .postAluno(this.formData.value)
       .then((res) => {
@@ -146,7 +146,7 @@ export class UsuariosFormComponent implements OnInit {
       });
   }
 
-  async postAlunos() {
+  async putAlunos() {
     await this.usuariosService;
     let alunoSemSenha = this.formData.value;
     delete alunoSemSenha.password;

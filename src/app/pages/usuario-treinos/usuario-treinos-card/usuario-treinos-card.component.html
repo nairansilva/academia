@@ -26,7 +26,7 @@
   </div>
 </ion-card>
 
-<div *ngIf="treinos">
+<div *ngIf="listaDeTreinos">
   <ion-modal [isOpen]="isModalOpen">
     <ng-template>
       <ion-header>
@@ -39,7 +39,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-list>
-          <div *ngFor="let treino of treinos">
+          <div *ngFor="let treino of listaDeTreinos">
             <ion-item-group>
               <ion-item lines="none">
                 <ion-checkbox
@@ -53,13 +53,13 @@
             </ion-item-group>
           </div>
 
-          <ion-button class="save.button" expand="block" color="primary" (click)="salvar()">
+          <!-- <ion-button class="save.button" expand="block" color="primary" (click)="salvarExercicioTreino()">
             <ion-icon slot="end" name="save"></ion-icon>
             Salvar</ion-button
-          >
+          > -->
           <ion-button class="cancel.button" expand="block" color="danger" (click)="setOpen(false)">
             <ion-icon slot="end" name="arrow-back"></ion-icon>
-            Cancelar</ion-button
+            Voltar</ion-button
           >
         </ion-list>
       </ion-content>

@@ -47,6 +47,23 @@ export class UsuarioTreinosExerciciosService {
     >;
   }
 
+  getAlunoTreinosExercicioByAlunoAETreino(
+    usuario = '',
+    treino = '',
+  ): Observable<UsuarioTreinoExerciciosInterface[]> {
+    const usuarioTreinos = collection(this.firestore, this.dbName);
+    let organizationsQuery: any;
+
+    organizationsQuery = query(
+      usuarioTreinos,
+      where('idUsuario', '==', usuario),
+      where('idTreino', '==', treino),
+    );
+    return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
+      UsuarioTreinoExerciciosInterface[]
+    >;
+  }
+
   getAlunoTreinosExercicioByTreino(
     treino = '',
   ): Observable<UsuarioTreinoExerciciosInterface[]> {

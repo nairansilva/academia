@@ -12,6 +12,7 @@ import {
 import { take, finalize } from 'rxjs/operators';
 import { UsuarioTreinosExerciciosService } from '../shared/usuario-treino-exercicios.service';
 import { UsuarioTreinoExerciciosInterface } from '../shared/usuario-treinos-exercicios.model';
+import { TreinoSelecionadosInterface } from '../shared/treinos-selecionados.model';
 
 @Component({
   selector: 'app-usuario-treinos-card',
@@ -24,7 +25,7 @@ export class UsuarioTreinosCardComponent implements OnInit {
 
   isModalOpen = false;
   loading: any;
-  treinos: TreinoInterface[];
+  listaDeTreinos: TreinoInterface[];
   treinosSelecionados: UsuarioTreinoExerciciosInterface[] = [];
 
   constructor(
@@ -72,9 +73,13 @@ export class UsuarioTreinosCardComponent implements OnInit {
 
     this.treinosService.getTreinos().subscribe({
       next: (res) => {
-        this.treinos = res.map((obj) => ({ ...obj, check: false }));
+        this.listaDeTreinos = res.map((obj) => ({
+          ...obj,
+          check: false,
+        }));
         this.setOpen(true);
         if (this.loading) this.loading.dismiss();
+        console.log(this.listaDeTreinos);
       },
       error: (error) => {
         console.error(error);
@@ -92,16 +97,19 @@ export class UsuarioTreinosCardComponent implements OnInit {
       this.loading.present();
 
       this.usuarioTreinosExerciciosService
-        .getAlunoTreinosExercicioByAluno(this.usuarioXTreino.idUsuario)
+        .getAlunoTreinosExercicioByAlunoAETreino(
+          this.usuarioXTreino.idUsuario,
+          this.usuarioXTreino.id
+        )
         .subscribe({
           next: (res) => {
             this.treinosSelecionados = res;
             res.map((treinoXAluno) => {
-              this.treinos.filter((treinoFiltrado, index) => {
+              this.listaDeTreinos.filter((treinoFiltrado, index) => {
                 if (treinoFiltrado.id == treinoXAluno.idExercicio) {
-                  this.treinos[index].check = true;
+                  this.listaDeTreinos[index].check = true;
                 } else {
-                  // this.treinos[index].check = false;
+                  // this.listaDeTreinos[index].check = false;
                 }
               });
             });
@@ -142,7 +150,7 @@ export class UsuarioTreinosCardComponent implements OnInit {
     await alert.present();
   }
 
-  marcaTreino(ev: any, treino: TreinoInterface) {
+  async marcaTreino(ev: any, treino: TreinoInterface) {
     if (ev.detail.checked) {
       let index = 0;
       this.treinosSelecionados.filter((treinoSelecionado) => {
@@ -152,13 +160,16 @@ export class UsuarioTreinosCardComponent implements OnInit {
       });
 
       if (index === 0) {
-        this.treinosSelecionados.push({
+        const exercicio = {
+          id: '',
           idUsuario: this.usuarioXTreino.idUsuario,
           idExercicio: treino.id,
           idTreino: this.usuarioXTreino.id,
-          id: '',
-        });
+        };
+        this.treinosSelecionados.push(exercicio);
+        await this.salvarExercicioTreino(exercicio);
       }
+      // this.treinosSelecionados = [];
     } else {
       let index = 0;
       this.treinosSelecionados.filter((treinoSelecionado) => {
@@ -168,13 +179,46 @@ export class UsuarioTreinosCardComponent implements OnInit {
       });
 
       if (index >= 0) {
-        this.treinosSelecionados.splice(index, 1);
+        // console.log(this.treinosSelecionados[index-1])
+        this.deletaExercicioTreino(this.treinosSelecionados[index - 1].id);
+        // this.treinosSelecionados.splice(index, 1);
       }
       // console.log(index, this.treinosSelecionados);
     }
   }
 
-  async salvar() {
+  async salvarExercicioTreino(exercicio: UsuarioTreinoExerciciosInterface) {
+    const loading = await this.loadingCtrl.create({
+      message: 'Salvando Treino...',
+    });
+
+    await loading.present();
+
+    //ToDo: Criar um array com os itens marcador originais. O que for desmacado, eu deleto.
+
+    const treinoIncluido =
+      await this.usuarioTreinosExerciciosService.postAlunoTreinosExercicios(
+        exercicio
+      );
+    console.log('listaDeTreinos', this.listaDeTreinos);
+    console.log('exercicio', exercicio);
+
+    console.log(treinoIncluido);
+
+    loading.dismiss();
+    this.treinosSelecionados = [];
+    const toast = await this.toastController.create({
+      message: 'Treino Atualizado com Sucesso!',
+      duration: 1500,
+      color: 'success',
+      position: 'top',
+    });
+
+    await toast.present();
+    // this.setOpen(false);
+  }
+
+  async deletaExercicioTreino(id: string) {
     const loading = await this.loadingCtrl.create({
       message: 'Salvando Treino...',
     });
@@ -190,22 +234,21 @@ export class UsuarioTreinosCardComponent implements OnInit {
         idExercicio: treinoSelecionado.idExercicio,
         idTreino: this.usuarioXTreino.id,
       };
-      await this.usuarioTreinosExerciciosService.postAlunoTreinosExercicios(
-        exercicio
+      await this.usuarioTreinosExerciciosService.deleteAlunoTreinosExercicios(
+        id
       );
     });
 
     loading.dismiss();
     this.treinosSelecionados = [];
     const toast = await this.toastController.create({
-      message: 'Treino Salvo com Sucesso!',
+      message: 'Treino Atualizado com Sucesso!',
       duration: 1500,
       color: 'success',
       position: 'top',
     });
 
     await toast.present();
-    this.setOpen(false);
   }
 
   async deletarTreino() {
