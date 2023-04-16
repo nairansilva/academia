@@ -53,11 +53,11 @@ export class UsuarioTreinosComponent implements OnInit {
   }
 
   novoTreino() {
-    this.router.navigate([`usuariotreinos/${this.idUsuario}/form`]);
+    this.router.navigate([`admin/usuariotreinos/${this.idUsuario}/form`]);
   }
 
   voltar(){
-    this.router.navigate([`usuarios/form/${this.idUsuario}` ])
+    this.router.navigate([`admin/usuarios/form/${this.idUsuario}` ])
   }
 
   async registroExcluido() {

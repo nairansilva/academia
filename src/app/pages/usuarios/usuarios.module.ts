@@ -6,14 +6,12 @@ import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
-
 @NgModule({
-  declarations: [UsuariosComponent, UsuariosCardComponent, UsuariosFormComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    UsuariosRoutingModule
-  ]
+  declarations: [
+    UsuariosComponent,
+    UsuariosCardComponent,
+    UsuariosFormComponent,
+  ],
+  imports: [CommonModule, SharedModule, UsuariosRoutingModule],
 })
-export class UsuariosModule { }
+export class UsuariosModule {}

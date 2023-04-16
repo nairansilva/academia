@@ -14,30 +14,34 @@ const routes: Routes = [
       {
         path: 'usuarios',
         loadChildren: () =>
-          import('./../usuarios/usuarios.module').then((m) => m.UsuariosModule),
-          canActivate:[AuthGuard]
+          import('../usuarios/usuarios.module').then((m) => m.UsuariosModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'treinos',
         loadChildren: () =>
-          import('./../treinos/treinos.module').then((m) => m.TreinosModule),
-          canActivate:[AuthGuard]
-      },
-      {
-        path: 'pagamentos',
-        loadChildren: () =>
-          import('./../pagamentos/pagamentos.module').then(
-            (m) => m.PagamentosModule
-          ),
-          canActivate:[AuthGuard]
+          import('../treinos/treinos.module').then((m) => m.TreinosModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'usuariotreinos',
         loadChildren: () =>
-          import('./../usuario-treinos/usuario-treinos.module').then(
-            (m) => m.UsuarioTreinosModule
+          import('../usuario-treinos/usuario-treinos.module').then((m) => m.UsuarioTreinosModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'pagamentos',
+        loadChildren: () =>
+          import('../pagamentos/pagamentos.module').then(
+            (m) => m.PagamentosModule
           ),
-          canActivate:[AuthGuard]
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'usuarioavaliacao',
+        loadChildren: () =>
+          import('../usuario-avaliacao/usuario-avaliacao.module').then((m) => m.UsuarioAvaliacaoModule),
+        canActivate: [AuthGuard],
       },
     ],
   },

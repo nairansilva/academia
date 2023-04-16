@@ -135,7 +135,7 @@ export class UsuariosFormComponent implements OnInit {
         this.colorHelp = 'sucess';
         this.messageToast = 'Cadastro Realizado com Sucesso';
         this.formData.reset();
-        this.router.navigate(['usuarios']);
+        this.router.navigate(['admin/usuarios']);
       })
       .catch((error) => {
         this.loading.dismiss();
@@ -158,7 +158,7 @@ export class UsuariosFormComponent implements OnInit {
         this.colorHelp = 'success';
         this.messageToast = 'Cadastro Alterado com Sucesso';
         this.formData.reset();
-        this.router.navigate(['usuarios']);
+        this.router.navigate(['admin/usuarios']);
       })
       .catch((error) => {
         this.loading.dismiss();
@@ -170,12 +170,12 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   treinos() {
-    this.router.navigate([`usuariotreinos/${this.id}`]);
+    this.router.navigate([`admin/usuariotreinos/${this.id}`]);
   }
 
   cancelar() {
     this.formData.reset();
-    this.router.navigate(['usuarios']);
+    this.router.navigate(['admin/usuarios']);
   }
 
   transformPhone(tel: string) {

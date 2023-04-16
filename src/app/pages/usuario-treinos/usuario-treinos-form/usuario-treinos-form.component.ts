@@ -93,7 +93,7 @@ export class UsuarioTreinosFormComponent implements OnInit {
         this.colorHelp = 'sucess';
         this.messageToast = 'Cadastro Realizado com Sucesso';
         this.formData.reset();
-        this.router.navigate([`usuariotreinos/${this.idUsuario}`]);
+        this.router.navigate([`admin/usuariotreinos/${this.idUsuario}`]);
       })
       .catch((error) => {
         this.loading.dismiss();
@@ -116,7 +116,7 @@ export class UsuarioTreinosFormComponent implements OnInit {
         this.colorHelp = 'success';
         this.messageToast = 'Cadastro Alterado com Sucesso';
         this.formData.reset();
-        this.router.navigate(['treinos']);
+        this.router.navigate(['admin/treinos']);
       })
       .catch((error) => {
         this.loading.dismiss();
@@ -133,6 +133,6 @@ export class UsuarioTreinosFormComponent implements OnInit {
 
   cancelar() {
     this.formData.reset();
-    this.router.navigate([`usuariotreinos/${this.idUsuario}`]);
+    this.router.navigate([`admin/usuariotreinos/${this.idUsuario}`]);
   }
 }

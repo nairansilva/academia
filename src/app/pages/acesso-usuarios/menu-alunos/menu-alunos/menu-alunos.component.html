@@ -1,0 +1,24 @@
+<ion-router-outlet></ion-router-outlet>
+
+<ion-tabs #tabs>
+  <ion-tab-bar slot="bottom" [selectedTab]="true">
+    <ion-tab-button tab="treinamentos">
+      <ion-icon name="fitness"></ion-icon>
+      Treinos
+    </ion-tab-button>
+    <ion-tab-button tab="perfil">
+      <ion-icon name="person"></ion-icon>
+      Perfil
+    </ion-tab-button>
+    <ion-tab-button (click)="logout()">
+      <ion-icon name="log-out"></ion-icon>
+      Sair
+    </ion-tab-button>
+    <ion-alert
+      trigger="present-alert"
+      header="Atenção"
+      message="Confirma o Logout?"
+      [buttons]="alertButtons"
+    ></ion-alert>
+  </ion-tab-bar>
+</ion-tabs>

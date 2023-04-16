@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         this.desabilitaLogin = false;
         localStorage.setItem('user', res.user);
         this.loading.dismiss();
-        this.router.navigate(['usuarios']);
+        this.router.navigate(['']);
       })
       .catch((error) => {
         (this.isToastOpen = true);

@@ -44,7 +44,7 @@ export class TreinosComponent implements OnInit {
   }
 
   novoTreino() {
-    this.router.navigate(['/treinos/form']);
+    this.router.navigate(['admin/treinos/form']);
   }
 
   listaTreinos() {

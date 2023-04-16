@@ -61,11 +61,32 @@ export class UsuariosCardComponent implements OnInit {
       .catch((error) => console.error(error));
   }
 
-  openPhone() {
-    window.open('tel:' + this.usuario.telefone);
+  async openPhone() {
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: 'Confirma Ligar para o usuário?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancelei');
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            window.open('tel:' + this.usuario.telefone);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
   editar() {
-    this.router.navigate(['usuarios/form/', this.usuario.id]);
+    this.router.navigate(['admin/usuarios/form/', this.usuario.id]);
   }
 
   async excluir() {
@@ -90,13 +111,18 @@ export class UsuariosCardComponent implements OnInit {
     const toast = await this.toastController.create({
       message: 'Registro Exluído com Sucesso!',
       duration: 1500,
-      color:'success',
+      color: 'success',
       position: 'top',
     });
 
     await toast.present();
 
     this.registroExcluido.emit();
+  }
 
+  abreAvaliacao() {
+    this.router.navigate(['admin/usuarioavaliacao'], {
+      queryParams: { usuario: this.usuario.nome, id: this.usuario.id },
+    });
   }
 }

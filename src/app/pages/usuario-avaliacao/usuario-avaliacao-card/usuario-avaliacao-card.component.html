@@ -1,19 +1,14 @@
 <ion-card>
-  <ion-card-header >
-    <ion-avatar>
-      <img alt="foto do aluno" [src]="imagem" />
-    </ion-avatar>
-    <ion-card-title (click)="abreAvaliacao()">{{ usuario.nome }}</ion-card-title>
+  <ion-card-header>
+    <ion-card-title>{{ usuarioNome }}</ion-card-title>
   </ion-card-header>
   <ion-card-content>
     <ion-list>
       <ion-item>
-        <ion-icon name="call" slot="start"></ion-icon>
-        <ion-label (click)="openPhone()">{{ usuario.telefone }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="mail" slot="start"></ion-icon>
-        <ion-label>{{ usuario.email }}</ion-label>
+        <ion-icon name="calendar" slot="start"></ion-icon>
+        <ion-label
+          ><b>Data da Avaliação: </b>{{ avalicao.dataAvaliacao }}</ion-label
+        >
       </ion-item>
     </ion-list>
   </ion-card-content>

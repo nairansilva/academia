@@ -17,25 +17,25 @@ import {
   query,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { AlunosInterface } from './alunos.model';
 import { StorageService } from 'src/app/shared/services/storage.service';
-
+import { UsuarioAvaliacaoInterface } from './usuario-avaliacao.model';
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class UsuariosService {
+export class UsuarioAvaliacaoService {
+
   constructor(
     private firestore: Firestore,
     private storageService: StorageService
   ) {}
 
-  private dbName = 'usuarios';
+  private dbName = 'usuariosavalicao';
 
-  getAlunos(
+  getUsuarioAvaliacao(
     filtro = '',
     page = 1,
     teste: string = ''
-  ): Observable<AlunosInterface[]> {
+  ): Observable<UsuarioAvaliacaoInterface[]> {
     const usuarios = collection(this.firestore, this.dbName);
     const pageSize = 10;
     let organizationsQuery: any;
@@ -58,21 +58,21 @@ export class UsuariosService {
     }
     // this.firestore.colle
     return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
-      AlunosInterface[]
+    UsuarioAvaliacaoInterface[]
     >;
   }
 
-  getByEmail(filtro = ''): Observable<AlunosInterface[]> {
+  getByIdUsuario(filtro = ''): Observable<UsuarioAvaliacaoInterface[]> {
     const usuarios = collection(this.firestore, this.dbName);
     const pageSize = 10;
     let organizationsQuery: any;
 
     organizationsQuery = query(
       usuarios,
-      where('email', '==', filtro),
+      where('idUsuario', '==', filtro),
     );
     return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
-      AlunosInterface[]
+    UsuarioAvaliacaoInterface[]
     >;
   }
 
@@ -82,35 +82,17 @@ export class UsuariosService {
     return getDoc(placeRef);
   }
 
-  postAluno(aluno: AlunosInterface): Promise<any> {
-    // [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10].forEach(async (element,index) => {
-    //   const usuarios = collection(this.firestore, 'usuarios');
-    //   aluno= {
-    //     id:'',
-    //     nome: 'nairan'+index,
-    //     password:'123456',
-    //     email: 'teste@teste.com',
-    //     telefone: 11,
-    //     idade:11,
-    //     objetivos:'string',
-    //     perfil:1
-    //   }
-    //   await addDoc(usuarios, aluno);
-    // });
+  postUsuarioAvaliacao(aluno: UsuarioAvaliacaoInterface): Promise<any> {
     const usuarios = collection(this.firestore, this.dbName);
     return addDoc(usuarios, aluno);
   }
 
-  getPictures(userId: string): Promise<any> {
-    return this.storageService.getImage(this.dbName, userId, userId);
-  }
-
-  putAluno(objectInput: { [x: string]: any }, id: string) {
+  putUsuarioAvaliacoa(objectInput: { [x: string]: any }, id: string) {
     const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
     return updateDoc(placeRef, objectInput);
   }
 
-  deleteAluno(id: string) {
+  deleteUsuarioAvalicao(id: string) {
     const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
     return deleteDoc(placeRef);
   }

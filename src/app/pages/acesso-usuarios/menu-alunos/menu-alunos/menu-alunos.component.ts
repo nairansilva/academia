@@ -1,15 +1,15 @@
-import { AlertController, LoadingController, IonTabBar, IonTabs } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, IonTabs, LoadingController } from '@ionic/angular';
 import { LoginService } from 'src/app/core/login/shared/login.service';
 
-
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
+  selector: 'app-menu-alunos',
+  templateUrl: './menu-alunos.component.html',
+  styleUrls: ['./menu-alunos.component.scss'],
 })
-export class MenuComponent implements OnInit {
+export class MenuAlunosComponent  implements OnInit {
+
   @ViewChild('tabs', {static: true}) tabs:IonTabs
 
 
@@ -62,19 +62,10 @@ export class MenuComponent implements OnInit {
     this.isAdmin = this.loginService.isUserAdmin;
     this.isLoading = false;
     this.loading.dismiss();
-    console.log(this.tabs)
-    // if (this.isAdmin){
-    //   this.router.navigate(['usuarios']);
-    // } else {
-    //   this.router.navigate(['treinamentos']);
-    // }
-    this.tabs.select('usuarios')
+    this.tabs.select('treinamentos')
   }
 
   async ngOnInit() {
-    console.log(this.tabs)
-
-    // this.router.navigate(['admin/usuarios']);
   }
 
   async logout() {

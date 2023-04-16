@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">Avaliação {{ usuario.nome }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="avaliacoesUsuario.length === 0">
+    <p>Não foram encontrados Avaliações para o usuário.</p>
+  </div>
+  <div *ngFor="let avaliacao of avaliacoesUsuario">
+    <app-usuario-avaliacao-card
+      [avalicao]="avaliacao"
+      [usuarioNome]="usuario.nome"
+    ></app-usuario-avaliacao-card>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="novaAvaliacao()" size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+</ion-content>

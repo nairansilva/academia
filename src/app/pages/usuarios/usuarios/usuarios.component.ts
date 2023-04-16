@@ -26,23 +26,19 @@ export class UsuariosComponent {
 
   ngOnInit() {
     console.log('to no usuarios')
-    this.listaAlunos();
+    // this.listaAlunos();
   }
-
-  // ionViewDidEnter(){
-  //   console.log("Macaco véio")
-  // }
 
   ionViewWillEnter() {
     // this.ngOnInit();
     this.pagina = 1;
     this.usuarios = [];
-    this.router.navigate(['/usuarios']);
+    this.router.navigate(['admin//usuarios']);
     this.listaAlunos();
   }
 
   novoUsuario() {
-    this.router.navigate(['/usuarios/form']);
+    this.router.navigate(['admin//usuarios/form']);
   }
 
   listaAlunos() {

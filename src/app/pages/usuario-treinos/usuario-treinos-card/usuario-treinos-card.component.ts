@@ -2,11 +2,21 @@ import { TreinoInterface } from './../../treinos/shared/treinos.model';
 import { TreinosService } from './../../treinos/shared/treinos.service';
 import { UsuarioTreinoInterface } from './../shared/usuario-treinos.model';
 import { UsuarioTreinosService } from './../shared/usuario-treino.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
   LoadingController,
+  ModalController,
+  Platform,
   ToastController,
 } from '@ionic/angular';
 import { take, finalize } from 'rxjs/operators';
@@ -19,9 +29,20 @@ import { TreinoSelecionadosInterface } from '../shared/treinos-selecionados.mode
   templateUrl: './usuario-treinos-card.component.html',
   styleUrls: ['./usuario-treinos-card.component.scss'],
 })
-export class UsuarioTreinosCardComponent implements OnInit {
+export class UsuarioTreinosCardComponent implements OnInit, OnDestroy {
   @Input() usuarioXTreino: UsuarioTreinoInterface;
   @Output() registroExcluido = new EventEmitter();
+  @HostListener('window:popstate', ['$event'])
+  dismissModal() {
+    // console.log('opa');
+    this.setOpen(false);
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    this.setOpen(false);
+  }
 
   isModalOpen = false;
   loading: any;
@@ -35,8 +56,14 @@ export class UsuarioTreinosCardComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private alertController: AlertController,
     private toastController: ToastController,
-    private usuarioTreinosExerciciosService: UsuarioTreinosExerciciosService
-  ) {}
+    private usuarioTreinosExerciciosService: UsuarioTreinosExerciciosService,
+    private modalController: ModalController,
+    private platform: Platform
+  ) {
+    this.platform.backButton.subscribeWithPriority(5, () => {
+      this.setOpen(false);
+    });
+  }
 
   public alertButtons = [
     {
@@ -55,11 +82,23 @@ export class UsuarioTreinosCardComponent implements OnInit {
     },
   ];
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    //   const modalState = {
+    //     modal : true,
+    //     desc : 'fake state for our modal'
+    // };
+    // history.pushState(modalState,'');
+  }
+
+  ngOnDestroy() {
+    // if (window.history.state.modal) {
+    //   history.back();
+    // }
+  }
 
   editar() {
     this.router.navigate([
-      `usuariotreinos/${this.usuarioXTreino.idUsuario}/form`,
+      `admin/usuariotreinos/${this.usuarioXTreino.idUsuario}/form`,
       this.usuarioXTreino.id,
     ]);
   }

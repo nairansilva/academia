@@ -1,20 +1,20 @@
 <ion-router-outlet></ion-router-outlet>
 
-<ion-tabs>
+<ion-tabs #tabs>
   <ion-tab-bar slot="bottom" [selectedTab]="true">
-    <ion-tab-button tab="usuarios" (click)="goTo('usuarios')">
+    <ion-tab-button tab="usuarios" (click)="goTo('admin/usuarios')">
       <ion-icon name="person"></ion-icon>
       Usuários
     </ion-tab-button>
-    <ion-tab-button tab="treinos" (click)="goTo('treinos')">
+    <ion-tab-button tab="treinos">
       <ion-icon name="fitness"></ion-icon>
       Treinos
     </ion-tab-button>
-    <ion-tab-button tab="pagamentos" (click)="goTo('pagamentos')">
+    <ion-tab-button tab="pagamentos" (click)="goTo('admin/pagamentos')">
       <ion-icon name="cash"></ion-icon>
       Pagamentos
     </ion-tab-button>
-    <ion-tab-button  (click)="logout()">
+    <ion-tab-button (click)="logout()">
       <ion-icon name="log-out"></ion-icon>
       Sair
     </ion-tab-button>
@@ -26,3 +26,30 @@
     ></ion-alert>
   </ion-tab-bar>
 </ion-tabs>
+
+<!-- <ion-tabs>
+  <ion-tab-bar slot="bottom" [selectedTab]="true">
+    <ion-tab-button tab='usuarios'  (click)="goTo('usuarios')">
+      <ion-icon name="person"></ion-icon>
+      Usuários
+    </ion-tab-button>
+    <ion-tab-button tab='treinos' (click)="goTo('treinos')">
+      <ion-icon name="fitness"></ion-icon>
+      Treinos
+    </ion-tab-button>
+    <ion-tab-button (click)="goTo('pagamentos')">
+      <ion-icon name="cash"></ion-icon>
+      Pagamentos
+    </ion-tab-button>
+    <ion-tab-button (click)="logout()">
+      <ion-icon name="log-out"></ion-icon>
+      Sair
+    </ion-tab-button>
+    <ion-alert
+      trigger="present-alert"
+      header="Atenção"
+      message="Confirma o Logout?"
+      [buttons]="alertButtons"
+    ></ion-alert>
+  </ion-tab-bar>
+</ion-tabs> -->
