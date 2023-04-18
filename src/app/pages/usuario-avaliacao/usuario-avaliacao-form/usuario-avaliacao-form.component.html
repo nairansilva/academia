@@ -1,162 +1,180 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">{{tituloDaPagina}}</ion-title>
+    <ion-title slot="start">{{ tituloDaPagina }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div [formGroup]="formData">
-    <ion-item class="ion-item">
-      <ion-input
-        type="date"
-        label="Data da Avaliação"
-        label-placement="floating"
-        formControlName="dataAvaliacao"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Peso Atual"
-        label-placement="floating"
-        formControlName="pesoAtual"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Altura"
-        label-placement="floating"
-        formControlName="altura"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Subscapular"
-        label-placement="floating"
-        formControlName="subscapular"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Tricipital"
-        label-placement="floating"
-        formControlName="tricipital"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Peitoral"
-        label-placement="floating"
-        formControlName="peitoral"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Axiliar Média"
-        label-placement="floating"
-        formControlName="axilarMedia"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Supra Iliaca"
-        label-placement="floating"
-        formControlName="supraIliaca"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Abdominal"
-        label-placement="floating"
-        formControlName="abdominal"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Coxa"
-        label-placement="floating"
-        formControlName="coxa"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Tórax"
-        label-placement="floating"
-        formControlName="torax"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Cintura"
-        label-placement="floating"
-        formControlName="cintura"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Abdome"
-        label-placement="floating"
-        formControlName="abdome"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Quadril"
-        label-placement="floating"
-        formControlName="quadril"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Antebracos"
-        label-placement="floating"
-        formControlName="antebracos"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Braços"
-        label-placement="floating"
-        formControlName="bracos"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Coxas"
-        label-placement="floating"
-        formControlName="coxas"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Panturrilhas"
-        label-placement="floating"
-        formControlName="panturrilhas"
-      ></ion-input>
-    </ion-item>
-    <ion-item class="ion-item">
-      <ion-input
-        type="number"
-        label="Panturrilhas"
-        label-placement="floating"
-        formControlName="panturrilhas"
-      ></ion-input>
-    </ion-item>
+    <ion-segment value="composicao" color="primary"  (ionChange)="trocaSegmento($event)">
+      <ion-segment-button value="composicao">
+        <ion-label>Composição</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="perimetros">
+        <ion-label>Perímetros</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="resultado">
+        <ion-label>Avaliação  </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <div *ngIf="segmento==='composicao'">
+      <ion-item class="ion-item">
+        <ion-input
+          type="date"
+          label="Data da Avaliação"
+          label-placement="floating"
+          formControlName="dataAvaliacao"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Peso Atual"
+          label-placement="floating"
+          formControlName="pesoAtual"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Altura"
+          label-placement="floating"
+          formControlName="altura"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Subscapular (mm)"
+            label-placement="floating"
+          formControlName="subscapular"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Tricipital (mm)"
+          label-placement="floating"
+          formControlName="tricipital"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Peitoral (mm)"
+          label-placement="floating"
+          formControlName="peitoral"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Axiliar Média (mm)"
+          label-placement="floating"
+          formControlName="axilarMedia"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Supra Iliaca (mm)"
+          label-placement="floating"
+          formControlName="supraIliaca"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Abdominal (mm)"
+          label-placement="floating"
+          formControlName="abdominal"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Coxa (mm)"
+          label-placement="floating"
+          formControlName="coxa"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div *ngIf="segmento==='perimetros'">
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Tórax"
+          label-placement="floating"
+          formControlName="torax"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Cintura"
+          label-placement="floating"
+          formControlName="cintura"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Abdome"
+          label-placement="floating"
+          formControlName="abdome"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Quadril"
+          label-placement="floating"
+          formControlName="quadril"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Antebracos"
+          label-placement="floating"
+          formControlName="antebracos"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Braços"
+          label-placement="floating"
+          formControlName="bracos"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Coxas"
+          label-placement="floating"
+          formControlName="coxas"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Panturrilhas"
+          label-placement="floating"
+          formControlName="panturrilhas"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Panturrilhas"
+          label-placement="floating"
+          formControlName="panturrilhas"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div *ngIf="segmento==='resultado'">
+      <app-usuario-avaliacao-pollock [dadosAvaliacao]="formData.value"></app-usuario-avaliacao-pollock>
+    </div>
   </div>
 
   <div class="ion-text-end">

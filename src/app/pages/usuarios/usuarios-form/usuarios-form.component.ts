@@ -35,6 +35,7 @@ export class UsuariosFormComponent implements OnInit {
     this.formData = this.fb.group({
       id: [''],
       nome: ['', [Validators.required]],
+      sexo: ['F'],
       telefone: [''],
       idade: [''],
       objetivos: [''],
@@ -98,6 +99,7 @@ export class UsuariosFormComponent implements OnInit {
     this.formData.patchValue({
       id: id,
       nome: usuario.nome,
+      sexo: usuario.sexo,
       telefone: usuario.telefone,
       idade: usuario.idade,
       objetivos: usuario.objetivos,

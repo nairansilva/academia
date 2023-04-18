@@ -20,6 +20,7 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   usuario: AlunosInterface = {
     id: '',
     nome: '',
+    sexo: '',
     password: '',
     email: '',
     telefone: 0,

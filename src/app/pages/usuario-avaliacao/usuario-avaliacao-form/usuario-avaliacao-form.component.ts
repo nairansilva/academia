@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { UsuarioTreinosService } from '../../usuario-treinos/shared/usuario-treino.service';
 import { UsuarioAvaliacaoService } from '../shared/usuario-avaliacao.service';
 import { UsuarioAvaliacaoInterface } from '../shared/usuario-avaliacao.model';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-usuario-avaliacao-form',
@@ -21,12 +22,14 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
   tituloDaPagina = 'Nova Avaliação';
   isEdicao = false;
   loading: HTMLIonLoadingElement;
+  segmento: string = 'composicao';
 
   constructor(
     private fb: FormBuilder,
     private loadingCtrl: LoadingController,
     private router: Router,
     private route: ActivatedRoute,
+    private decimalPipe: DecimalPipe,
     private usuarioAvaliacaoService: UsuarioAvaliacaoService
   ) {
     this.idUsuario = this.route.snapshot.paramMap.get('idUsuario');
@@ -60,6 +63,17 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       pesoDesejavel: [],
       pesoResidual: [],
     });
+
+    // this.formData.valueChanges.subscribe((val) => {
+    //   console.log(val)
+    //   // if (typeof val.amount === 'string') {
+    //   //   const maskedVal = this.formatarDecimal(val.amount);
+    //   //   if (val.amount !== maskedVal) {
+    //   //     this.formData.patchValue({amount: maskedVal});
+    //   //   }
+    //   // }
+    // });
+
   }
 
   ngOnInit(): void {
@@ -174,6 +188,11 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       });
   }
 
+  trocaSegmento(ev: any) {
+    console.log(ev);
+    this.segmento = ev.detail.value;
+  }
+
   setOpen(option: boolean) {
     this.isToastOpen = option;
   }
@@ -183,5 +202,34 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
     this.router.navigate(['admin/usuarioavaliacao'], {
       queryParams: { usuario: '', id: this.idUsuario },
     });
+  }
+
+  formatarDecimal(valor: any) {
+    console.log(this.decimalPipe.transform((String(valor), '1.2-2')))
+    // console.log(valor)
+    // let amount = String(valor);
+
+    // const beforePoint = amount.split('.')[0];
+    // let integers = '';
+    // if (typeof beforePoint !== 'undefined') {
+    //   integers = beforePoint.replace(/\D+/g, '');
+    // }
+    // const afterPoint = amount.split('.')[1];
+    // let decimals = '';
+    // if (typeof afterPoint !== 'undefined') {
+    //   decimals = afterPoint.replace(/\D+/g, '');
+    // }
+    // if (decimals.length > 2) {
+    //   decimals = decimals.slice(0, 2);
+    // }
+    // amount = integers;
+    // if (typeof afterPoint === 'string') {
+    //   amount += '.';
+    // }
+    // if (decimals.length > 0) {
+    //   amount += decimals;
+    // }
+
+    // return amount;
   }
 }

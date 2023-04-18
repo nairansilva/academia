@@ -11,7 +11,9 @@
 </ion-header>
 <ion-content>
   <div *ngIf="usuarioXTreinos.length === 0">
-    <p>Não foram encontrados treinos para o usuário.</p>
+    <ion-text color="tertiary">
+      <h3>Não foram encontrados treinos para o usuário.</h3>
+    </ion-text>
   </div>
   <div *ngFor="let usuarioXTreino of usuarioXTreinos">
     <app-usuario-treinos-card
