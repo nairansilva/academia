@@ -41,9 +41,9 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   ionViewWillEnter() {
     // this.ngOnInit();
     this.avaliacoesUsuario = [];
-    this.router.navigate(['admin/usuarioavaliacao'], {
-      queryParams: { usuario: this.usuario.nome, id: this.usuario.id },
-    });
+    // this.router.navigate(['admin/usuarioavaliacao'], {
+    //   queryParams: { usuario: this.usuario.nome, id: this.usuario.id },
+    // });
     this.listaAvaliacoes();
   }
 
@@ -72,5 +72,9 @@ export class UsuarioAvaliacaoComponent implements OnInit {
     this.loading.present();
     this.avaliacoesUsuario = [];
     this.listaAvaliacoes();
+  }
+
+  cancelar(){
+    this.router.navigate(['admin/usuarios'])
   }
 }

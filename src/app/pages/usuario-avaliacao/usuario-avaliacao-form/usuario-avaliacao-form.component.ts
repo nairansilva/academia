@@ -30,7 +30,7 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
     private usuarioAvaliacaoService: UsuarioAvaliacaoService
   ) {
     this.idUsuario = this.route.snapshot.paramMap.get('idUsuario');
-    this.idAvaliacao = this.route.snapshot.paramMap.get('idAvaliacao');
+    this.idAvaliacao = this.route.snapshot.paramMap.get('id');
 
     this.formData = this.fb.group({
       idUsuario: [this.idUsuario],
