@@ -152,7 +152,9 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
         this.colorHelp = 'sucess';
         this.messageToast = 'Cadastro Realizado com Sucesso';
         this.formData.reset();
-        this.router.navigate([`admin/usuariotreinos/${this.idUsuario}`]);
+        this.router.navigate(['admin/usuarioavaliacao'], {
+          queryParams: { usuario: '', id: this.idUsuario },
+        });
       })
       .catch((error) => {
         this.loading.dismiss();

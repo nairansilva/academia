@@ -1,15 +1,17 @@
 <ion-row>
   <ion-col size="12" *ngFor="let photo of listPhotos">
-    <img (click)="cliquePhoto(photo)" [src]="photo" />
+    <img (click)="cliquePhoto(photo)" [src]="photo.photo" />
   </ion-col>
 </ion-row>
 
-<ion-fab slot="fixed" vertical="bottom" horizontal="center">
-  <ion-fab-button (click)="novaFoto()" size="small">
-    <ion-icon name="camera"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
-
+<ion-button
+  class="cancel-button"
+  expand="block"
+  color="tertiary"
+  (click)="novaFoto()"
+>
+  <ion-icon name="camera"></ion-icon>
+</ion-button>
 
 <div *ngIf="photoService.photos.length > 0">
   <ion-modal [isOpen]="modalAberto">

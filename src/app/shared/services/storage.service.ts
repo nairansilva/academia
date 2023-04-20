@@ -43,4 +43,10 @@ export class StorageService {
     return deleteObject(imgRef)
   }
 
+  deletePicture(storageName:string, idImg: string, imgName:string) {
+    const imgRef = ref(this.storage, `${storageName}/${idImg}/${imgName}`)
+
+    return deleteObject(imgRef)
+  }
+
 }

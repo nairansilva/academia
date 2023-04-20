@@ -7,7 +7,7 @@ import {
   Photo,
 } from '@capacitor/camera';
 import { PhotoService } from 'src/app/shared/services/PhotoService.service';
-import { Platform } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 import { getDownloadURL } from '@angular/fire/storage';
 
 @Component({
@@ -31,8 +31,11 @@ export class UsuarioAvaliacaoFotosComponent implements OnInit {
 
   photoSelected: string;
   modalAberto = false;
-  listPhotos: any[] = []
+  listPhotos: any[] = [];
+  loading: any;
+
   constructor(
+    private loadingCtrl: LoadingController,
     public photoService: PhotoService,
     private storageService: StorageService,
     private platform: Platform
@@ -50,34 +53,53 @@ export class UsuarioAvaliacaoFotosComponent implements OnInit {
     this.modalAberto = open;
   }
 
-  cliquePhoto(photo: string) {
+  async cliquePhoto(photo: any) {
+    this.loading = await this.loadingCtrl.create({
+      message: 'excluindo Fotos...',
+    });
     this.photoSelected = photo;
-    this.setOpen(true);
+    await this.storageService.deletePicture(
+      'avaliacao',
+      String(this.idAvaliacao),
+      photo.name
+    );
+
+    this.listaPhotos();
   }
 
-  async listaPhotos(){
-    const images = await this.storageService.getImages('avaliacao', String(this.idAvaliacao))
+  async listaPhotos() {
+    this.listPhotos = [];
+    this.loading = await this.loadingCtrl.create({
+      message: 'Buscando Fotos...',
+    });
+    let nContator = 0;
+    const images = await this.storageService.getImages(
+      'avaliacao',
+      String(this.idAvaliacao)
+    );
     if (images.items.length > 0) {
-      images.items.forEach(image => {
+      images.items.forEach((image, index) => {
         const url = getDownloadURL(image);
         url.then((res) => {
-          this.listPhotos.push(res);
+          this.listPhotos.push({ photo: res, name: image.name });
+          nContator++;
+          if ((nContator = images.items.length)) {
+            this.loading.dismiss();
+          }
         });
-      })
+      });
     }
-    console.log(images)
   }
 
   async novaFoto() {
-    const teste = await this.photoService.addNewToGallery();
+    const newPicture = await this.photoService.addNewToGallery();
 
-    const teste2 = await this.storageService.uploadPicture(
+    await this.storageService.uploadPicture(
       'avaliacao',
-      teste.base64Data,
+      newPicture.base64Data,
       String(this.idAvaliacao),
-      teste.filepath
+      newPicture.filepath
     );
-
-    console.log(teste2);
+    this.listaPhotos();
   }
 }
