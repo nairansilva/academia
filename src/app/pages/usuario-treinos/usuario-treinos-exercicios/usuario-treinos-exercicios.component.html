@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Treino {{ usuarioXTreino.nome }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="buscaDeTreinoFinalizada">
+    <div *ngFor="let exercicio of listaDeTreinos">
+      <!-- [treino]="treino"
+      [usuarioXTreino]="usuarioXTreino"
+      [treinosSelecionados]="treinosSelecionados" -->
+      <app-usuario-treinos-exercicios-card
+        [exercicio]="exercicio"
+      ></app-usuario-treinos-exercicios-card>
+    </div>
+    <ion-button
+      class="cancel.button"
+      expand="block"
+      color="danger"
+      (click)="voltar()"
+    >
+      <ion-icon slot="end" name="arrow-back"></ion-icon>
+      Voltar</ion-button
+    >
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="novoExercicio()" size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

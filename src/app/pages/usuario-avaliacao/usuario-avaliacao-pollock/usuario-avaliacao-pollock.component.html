@@ -5,6 +5,7 @@
       label="% De Gordura Ideal"
       label-placement="floating"
       formControlName="percentualGorduraIdeal"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
 
@@ -14,6 +15,7 @@
       label="% De Gordura Atual"
       label-placement="floating"
       formControlName="percentualGorduraAtual"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
 
@@ -23,6 +25,7 @@
       label="Peso Gordo"
       label-placement="floating"
       formControlName="pesoGordo"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
 
@@ -32,6 +35,7 @@
       label="Peso Magro"
       label-placement="floating"
       formControlName="pesoMagro"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
 
@@ -41,6 +45,7 @@
       label="Peso Desejável"
       label-placement="floating"
       formControlName="pesoDesejavel"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
 
@@ -50,6 +55,19 @@
       label="Peso Residual"
       label-placement="floating"
       formControlName="pesoResidual"
+      [disabled]="true"
     ></ion-input>
   </ion-item>
+
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header> Composição Corporal </ion-card-header>
+      <ion-card-content>
+        <canvas
+          #barCanvas
+          style="position: relative; height: 20vh; width: 40vw"
+        ></canvas>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </div>

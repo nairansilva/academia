@@ -57,7 +57,7 @@ export class UsuarioTreinosExerciciosService {
     organizationsQuery = query(
       usuarioTreinos,
       where('idUsuario', '==', usuario),
-      where('idTreino', '==', treino),
+      where('idExercicio', '==', treino),
     );
     return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
       UsuarioTreinoExerciciosInterface[]
@@ -104,6 +104,11 @@ export class UsuarioTreinosExerciciosService {
     // });
     const usuarioTreinos = collection(this.firestore, this.dbName);
     return addDoc(usuarioTreinos, aluno);
+  }
+
+  putAlunoTreinosExercicios(objectInput: { [x: string]: any }, id: string) {
+    const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
+    return updateDoc(placeRef, objectInput);
   }
 
   deleteAlunoTreinosExercicios(id: string) {

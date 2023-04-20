@@ -1,0 +1,139 @@
+<ion-content>
+  <div [formGroup]="formData">
+    <ion-button
+      id="open-modal"
+      expand="block"
+      class="login-button"
+      color="secondary"
+      (click)="setOpen(true)"
+    >
+      <ion-icon slot="start" name="barbell"></ion-icon>
+
+      Selecionar Treino</ion-button
+    >
+
+    <ion-item-group>
+      <ion-item class="ion-item">
+        <ion-input
+          type="text"
+          label="Nome"
+          formControlName="nomeExercicio"
+          label-placement="floating"
+        ></ion-input>
+      </ion-item>
+      <ion-item class="ion-item">
+        <ion-input
+          type="text"
+          label="Equipamento"
+          formControlName="equipamento"
+          label-placement="floating"
+        ></ion-input>
+      </ion-item>
+    </ion-item-group>
+    <ion-item>
+      <ion-select
+        interface="popover"
+        placeholder="Repetições"
+        formControlName="repeticoes"
+      >
+        <ion-select-option value="1" label="1x">1x</ion-select-option>
+        <ion-select-option value="2" label="2x">2x</ion-select-option>
+        <ion-select-option value="3" label="2x">3x</ion-select-option>
+        <ion-select-option value="4" label="4x">4x</ion-select-option>
+        <ion-select-option value="5" label="5x">5x</ion-select-option>
+      </ion-select>
+      <ion-item class="ion-item">
+        <ion-input
+          type="text"
+          label="Peso/Tempo"
+          formControlName="peso"
+          label-placement="floating"
+        ></ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="ion-text-end">
+      <ion-button
+        class="login-button"
+        expand="block"
+        (click)="salvar()"
+        color="primary"
+        [disabled]="!formData.valid"
+        >Salvar</ion-button
+      >
+      <ion-button
+        class="cancel-button"
+        expand="block"
+        (click)="cancelar()"
+        color="danger"
+        >Cancelar</ion-button
+      >
+    </div>
+  </div>
+
+  <div *ngIf="treinos.length > 0">
+    <ion-modal [isOpen]="modalAberto">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Selecione o Exercício</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)">Fechar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <div *ngFor="let treino of treinos">
+            <ion-card (click)="adicionaTreino(treino)">
+              <ion-card-header>
+                <ion-card-title>{{ treino.nome }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <b>Equipamento: </b> {{ treino.equipamento }}
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </div>
+</ion-content>
+
+<!-- <div *ngIf="treino">
+  <div [formGroup]="formData">
+    <ion-card>
+      <ion-card-title>{{treino.nome}}</ion-card-title>
+      <ion-card-content>
+        <ion-list>
+          <ion-item-group>
+            <ion-item> <b>Nome: </b>{{ treino.nome }} </ion-item>
+            <ion-item> <b>Equipamento: </b>{{ treino.equipamento }} </ion-item>
+          </ion-item-group>
+          <ion-item>
+            <ion-select
+              interface="popover"
+              placeholder="Repetições"
+              formControlName="repeticoes"
+            >
+              <ion-select-option value="1" label="1x">1x</ion-select-option>
+              <ion-select-option value="2" label="2x">2x</ion-select-option>
+              <ion-select-option value="3" label="2x">3x</ion-select-option>
+              <ion-select-option value="4" label="4x">4x</ion-select-option>
+              <ion-select-option value="5" label="5x">5x</ion-select-option>
+            </ion-select>
+            <ion-item class="ion-item">
+              <ion-input
+                type="text"
+                label="Peso/Tempo"
+                formControlName="peso"
+                label-placement="floating"
+              ></ion-input>
+            </ion-item>
+          </ion-item>
+        </ion-list>
+        <ion-button fill="clear" (click)="selecionaExercicio()">Salvar</ion-button>
+        <ion-button fill="clear">Excluir</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div> -->

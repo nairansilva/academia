@@ -10,59 +10,19 @@
       </ion-item>
     </ion-list>
   </ion-card-content>
-  <div class="ion-text-end">
-    <ion-button slot="start" (click)="listaTreinos()" color="secondary" id="open-modal" >
+
+  <div class="group-button-card">
+    <ion-button fill="clear" slot="start" (click)="listaTreinos()" color="secondary" id="open-modal" >
       <ion-icon slot="end" name="barbell"></ion-icon>
       Exerc.</ion-button
     >
-    <ion-button color="primary" (click)="editar()">
+    <ion-button fill="clear" color="primary" (click)="editar()">
       <ion-icon slot="end" name="build"></ion-icon>
       Editar</ion-button
     >
-    <ion-button color="danger" (click)="excluir()">
+    <ion-button fill="clear" color="danger" (click)="excluir()">
       <ion-icon slot="end" name="trash"></ion-icon>
       Excluir</ion-button
     >
   </div>
 </ion-card>
-
-<div *ngIf="listaDeTreinos">
-  <ion-modal [isOpen]="isModalOpen">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Treino {{ usuarioXTreino.nome }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="setOpen(false)">Fechar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-list>
-          <div *ngFor="let treino of listaDeTreinos">
-            <ion-item-group>
-              <ion-item lines="none">
-                <ion-checkbox
-                  label-placement="start"
-                  (ionChange)="marcaTreino($event, treino)"
-                  [checked]="treino.check"
-                  ><b>{{ treino.nome }}</b></ion-checkbox
-                >
-              </ion-item>
-              <ion-item> <b>Equipamento: </b>{{ treino.equipamento }} </ion-item>
-            </ion-item-group>
-          </div>
-
-          <!-- <ion-button class="save.button" expand="block" color="primary" (click)="salvarExercicioTreino()">
-            <ion-icon slot="end" name="save"></ion-icon>
-            Salvar</ion-button
-          > -->
-          <ion-button class="cancel.button" expand="block" color="danger" (click)="setOpen(false)">
-            <ion-icon slot="end" name="arrow-back"></ion-icon>
-            Voltar</ion-button
-          >
-        </ion-list>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-</div>

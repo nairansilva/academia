@@ -1,0 +1,22 @@
+<ion-card>
+  <ion-card-title>{{ exercicio.nomeExercicio }}</ion-card-title>
+  <ion-card-content>
+    <ion-list>
+      <ion-item-group>
+        <ion-item> <b>Equipamento: </b>{{ exercicio.equipamento }} </ion-item>
+        <ion-item> <b>Repetições: </b>{{ exercicio.repeticoes }} </ion-item>
+        <ion-item> <b>Peso/Tempo: </b>{{ exercicio.peso }} </ion-item>
+      </ion-item-group>
+    </ion-list>
+    <div class="ion-text-end">
+      <ion-button fill="clear" color="primary" (click)="editar()">
+        <ion-icon slot="end" name="build"></ion-icon>
+        Editar</ion-button
+      >
+      <ion-button fill="clear" color="danger" (click)="excluir()">
+        <ion-icon slot="end" name="trash"></ion-icon>
+        Excluir</ion-button
+      >
+    </div>
+  </ion-card-content>
+</ion-card>

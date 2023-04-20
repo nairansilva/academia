@@ -1,6 +1,9 @@
 export interface TreinoInterface {
-  id:string;
+  id: string;
   nome: string;
-  equipamento:string;
-  check?:boolean
+  equipamento: string;
+  check?: boolean;
+  peso?: string;
+  repeticoes?: string;
+  idExercicioAluno?: string;
 }

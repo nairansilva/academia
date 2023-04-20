@@ -35,13 +35,11 @@ export class UsuarioTreinosCardComponent implements OnInit, OnDestroy {
   @HostListener('window:popstate', ['$event'])
   dismissModal() {
     // console.log('opa');
-    this.setOpen(false);
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    this.setOpen(false);
   }
 
   isModalOpen = false;
@@ -61,7 +59,6 @@ export class UsuarioTreinosCardComponent implements OnInit, OnDestroy {
     private platform: Platform
   ) {
     this.platform.backButton.subscribeWithPriority(5, () => {
-      this.setOpen(false);
     });
   }
 
@@ -104,79 +101,13 @@ export class UsuarioTreinosCardComponent implements OnInit, OnDestroy {
   }
 
   async listaTreinos() {
-    this.loading = await this.loadingCtrl.create({
-      message: 'Buscando Treinos...',
-    });
-
-    this.loading.present();
-
-    this.treinosService.getTreinos().subscribe({
-      next: (res) => {
-        this.listaDeTreinos = res.map((obj) => ({
-          ...obj,
-          check: false,
-        }));
-        this.setOpen(true);
-        if (this.loading) this.loading.dismiss();
-        console.log(this.listaDeTreinos);
-      },
-      error: (error) => {
-        console.error(error);
-        this.loading.dismiss();
-      },
-    });
+    sessionStorage.removeItem('usuarioXTreino')
+    sessionStorage.setItem('usuarioXTreino', JSON.stringify(this.usuarioXTreino))
+    this.router.navigate([
+      `admin/usuariotreinos/${this.usuarioXTreino.idUsuario}/form/${this.usuarioXTreino.id}/exercicios`
+    ]);
   }
 
-  async setOpen(option: boolean) {
-    if (option) {
-      this.loading = await this.loadingCtrl.create({
-        message: 'Buscando Treinos...',
-      });
-
-      this.loading.present();
-
-      this.usuarioTreinosExerciciosService
-        .getAlunoTreinosExercicioByAlunoAETreino(
-          this.usuarioXTreino.idUsuario,
-          this.usuarioXTreino.id
-        )
-        .subscribe({
-          next: (res) => {
-            this.treinosSelecionados = res;
-            res.map((treinoXAluno) => {
-              this.listaDeTreinos.filter((treinoFiltrado, index) => {
-                if (treinoFiltrado.id == treinoXAluno.idExercicio) {
-                  this.listaDeTreinos[index].check = true;
-                } else {
-                  // this.listaDeTreinos[index].check = false;
-                }
-              });
-            });
-            // console.log(this.treinosSelecionados);
-            if (this.loading) this.loading.dismiss();
-          },
-          error: (error) => {
-            if (this.loading) this.loading.dismiss();
-          },
-        });
-    }
-    this.isModalOpen = option;
-  }
-
-  validaMarcacao(treino: TreinoInterface): boolean {
-    let index = 0;
-    this.treinosSelecionados.filter((treinoSelecionado) => {
-      if (treinoSelecionado.idExercicio === treino.id) {
-        index = 1;
-      }
-    });
-
-    if (index >= 0) {
-      return true;
-    }
-    // console.log(index, this.treinosSelecionados);
-    return false;
-  }
 
   async excluir() {
     const alert = await this.alertController.create({
@@ -187,107 +118,6 @@ export class UsuarioTreinosCardComponent implements OnInit, OnDestroy {
     });
 
     await alert.present();
-  }
-
-  async marcaTreino(ev: any, treino: TreinoInterface) {
-    if (ev.detail.checked) {
-      let index = 0;
-      this.treinosSelecionados.filter((treinoSelecionado) => {
-        if (treinoSelecionado.idExercicio === treino.id) {
-          index = 1;
-        }
-      });
-
-      if (index === 0) {
-        const exercicio = {
-          id: '',
-          idUsuario: this.usuarioXTreino.idUsuario,
-          idExercicio: treino.id,
-          idTreino: this.usuarioXTreino.id,
-        };
-        this.treinosSelecionados.push(exercicio);
-        await this.salvarExercicioTreino(exercicio);
-      }
-      // this.treinosSelecionados = [];
-    } else {
-      let index = 0;
-      this.treinosSelecionados.filter((treinoSelecionado) => {
-        if (treinoSelecionado.idExercicio === treino.id) {
-          index = 1;
-        }
-      });
-
-      if (index >= 0) {
-        // console.log(this.treinosSelecionados[index-1])
-        this.deletaExercicioTreino(this.treinosSelecionados[index - 1].id);
-        // this.treinosSelecionados.splice(index, 1);
-      }
-      // console.log(index, this.treinosSelecionados);
-    }
-  }
-
-  async salvarExercicioTreino(exercicio: UsuarioTreinoExerciciosInterface) {
-    const loading = await this.loadingCtrl.create({
-      message: 'Salvando Treino...',
-    });
-
-    await loading.present();
-
-    //ToDo: Criar um array com os itens marcador originais. O que for desmacado, eu deleto.
-
-    const treinoIncluido =
-      await this.usuarioTreinosExerciciosService.postAlunoTreinosExercicios(
-        exercicio
-      );
-    console.log('listaDeTreinos', this.listaDeTreinos);
-    console.log('exercicio', exercicio);
-
-    console.log(treinoIncluido);
-
-    loading.dismiss();
-    this.treinosSelecionados = [];
-    const toast = await this.toastController.create({
-      message: 'Treino Atualizado com Sucesso!',
-      duration: 1500,
-      color: 'success',
-      position: 'top',
-    });
-
-    await toast.present();
-    // this.setOpen(false);
-  }
-
-  async deletaExercicioTreino(id: string) {
-    const loading = await this.loadingCtrl.create({
-      message: 'Salvando Treino...',
-    });
-
-    await loading.present();
-
-    //ToDo: Criar um array com os itens marcador originais. O que for desmacado, eu deleto.
-
-    this.treinosSelecionados.forEach(async (treinoSelecionado) => {
-      const exercicio = {
-        id: '',
-        idUsuario: treinoSelecionado.idUsuario,
-        idExercicio: treinoSelecionado.idExercicio,
-        idTreino: this.usuarioXTreino.id,
-      };
-      await this.usuarioTreinosExerciciosService.deleteAlunoTreinosExercicios(
-        id
-      );
-    });
-
-    loading.dismiss();
-    this.treinosSelecionados = [];
-    const toast = await this.toastController.create({
-      message: 'Treino Atualizado com Sucesso!',
-      duration: 1500,
-      color: 'success',
-      position: 'top',
-    });
-
-    await toast.present();
   }
 
   async deletarTreino() {
