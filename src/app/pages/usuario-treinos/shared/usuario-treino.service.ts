@@ -73,7 +73,7 @@ export class UsuarioTreinosService {
   }
 
   getPictures(userId: string): Promise<any> {
-    return this.storageService.getImage(this.dbName, userId, userId);
+    return this.storageService.getImages(this.dbName, userId);
   }
 
   putAlunoTreinos(objectInput: { [x: string]: any }, id: string) {

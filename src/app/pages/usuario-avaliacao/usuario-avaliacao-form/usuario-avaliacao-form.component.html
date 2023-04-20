@@ -5,18 +5,25 @@
 </ion-header>
 <ion-content>
   <div [formGroup]="formData">
-    <ion-segment value="composicao" color="primary"  (ionChange)="trocaSegmento($event)">
+    <ion-segment
+      value="composicao"
+      color="primary"
+      (ionChange)="trocaSegmento($event)"
+    >
       <ion-segment-button value="composicao">
-        <ion-label>Composição</ion-label>
+        <ion-label>Comp.</ion-label>
       </ion-segment-button>
       <ion-segment-button value="perimetros">
-        <ion-label>Perímetros</ion-label>
+        <ion-label>Per.</ion-label>
       </ion-segment-button>
       <ion-segment-button value="resultado">
-        <ion-label>Avaliação  </ion-label>
+        <ion-label>Avaliação</ion-label>
+      </ion-segment-button>
+      <ion-segment-button *ngIf="isEdicao" value="fotos">
+        <ion-label>Fotos</ion-label>
       </ion-segment-button>
     </ion-segment>
-    <div *ngIf="segmento==='composicao'">
+    <div *ngIf="segmento === 'composicao'">
       <ion-item class="ion-item">
         <ion-input
           type="date"
@@ -45,7 +52,7 @@
         <ion-input
           type="number"
           label="Subscapular (mm)"
-            label-placement="floating"
+          label-placement="floating"
           formControlName="subscapular"
         ></ion-input>
       </ion-item>
@@ -98,7 +105,7 @@
         ></ion-input>
       </ion-item>
     </div>
-    <div *ngIf="segmento==='perimetros'">
+    <div *ngIf="segmento === 'perimetros'">
       <ion-item class="ion-item">
         <ion-input
           type="number"
@@ -172,8 +179,13 @@
         ></ion-input>
       </ion-item>
     </div>
-    <div *ngIf="segmento==='resultado'">
-      <app-usuario-avaliacao-pollock [dadosAvaliacao]="formData.value"></app-usuario-avaliacao-pollock>
+    <div *ngIf="segmento === 'resultado'">
+      <app-usuario-avaliacao-pollock
+        [dadosAvaliacao]="formData.value"
+      ></app-usuario-avaliacao-pollock>
+    </div>
+    <div *ngIf="segmento === 'fotos'">
+      <app-usuario-avaliacao-fotos [idAvaliacao]="idAvaliacao"></app-usuario-avaliacao-fotos>
     </div>
   </div>
 

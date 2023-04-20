@@ -6,6 +6,7 @@ import { UsuarioAvaliacaoCardComponent } from './usuario-avaliacao-card/usuario-
 import { UsuarioAvaliacaoRoutingModule } from './usuario-avaliacao-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UsuarioAvaliacaoPollockComponent } from './usuario-avaliacao-pollock/usuario-avaliacao-pollock.component';
+import { UsuarioAvaliacaoFotosComponent } from './usuario-avaliacao-fotos/usuario-avaliacao-fotos.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { UsuarioAvaliacaoPollockComponent } from './usuario-avaliacao-pollock/us
     UsuarioAvaliacaoComponent,
     UsuarioAvaliacaoFormComponent,
     UsuarioAvaliacaoPollockComponent,
+    UsuarioAvaliacaoFotosComponent
   ],
   providers:[DecimalPipe],
   imports: [CommonModule, UsuarioAvaliacaoRoutingModule, SharedModule],

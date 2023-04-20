@@ -1,0 +1,29 @@
+<ion-row>
+  <ion-col size="12" *ngFor="let photo of listPhotos">
+    <img (click)="cliquePhoto(photo)" [src]="photo" />
+  </ion-col>
+</ion-row>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="center">
+  <ion-fab-button (click)="novaFoto()" size="small">
+    <ion-icon name="camera"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+
+<div *ngIf="photoService.photos.length > 0">
+  <ion-modal [isOpen]="modalAberto">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content zooming="true" style="width: 100%; height: 100%">
+        <img [src]="photoSelected" />
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</div>

@@ -85,7 +85,7 @@ export class TreinosService {
   }
 
   getPictures(userId: string): Promise<any> {
-    return this.storageService.getImage(this.dbName, userId, userId);
+    return this.storageService.getImages(this.dbName, userId);
   }
 
   putTreino(objectInput: { [x: string]: any }, id: string) {
