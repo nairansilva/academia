@@ -19,14 +19,15 @@ import Chart from 'chart.js/auto';
 })
 export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
   @Input() dadosAvaliacao: UsuarioAvaliacaoInterface;
-  @ViewChild('barCanvas') private barCanvas: ElementRef;
-  @ViewChild('lineCanvas') private lineCanvas: ElementRef;
+  @ViewChild('graficoCanvas') graficoCanvas: ElementRef;
+  tipoGrafico = 'barras';
+  tituloGrafico = 'Composição Corporal (kg)';
+  chart: any;
 
   formData: FormGroup;
   aluno: AlunosInterface = JSON.parse(
     String(sessionStorage.getItem('usuarioLogado'))
   );
-  barChart: any;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +35,11 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    const totalComposicao =
+    const idade = this.aluno.idade;
+    const pesoAtual = this.dadosAvaliacao.pesoAtual;
+    const alturaEmCm = this.dadosAvaliacao.altura * 100;
+
+    const somaDobras =
       this.dadosAvaliacao.subscapular +
       this.dadosAvaliacao.tricipital +
       this.dadosAvaliacao.peitoral +
@@ -43,109 +48,149 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
       this.dadosAvaliacao.abdominal +
       this.dadosAvaliacao.coxa;
 
-    const percentualDeGorduraMasculino =
-      0.29288 * totalComposicao -
-      0.0005 * (totalComposicao * totalComposicao) +
-      0.15845 * this.aluno.idade -
-      5.76377;
+    console.log('--- DEBUG INÍCIO (Pollock/Jackson 7 dobras) ---');
+    console.log('Idade:', idade);
+    console.log('Sexo:', this.aluno.sexo);
+    console.log('Peso Atual:', pesoAtual);
+    console.log('Altura (cm):', alturaEmCm);
+    console.log('Soma das 7 dobras (mm):', somaDobras);
 
-    const percentualDeGorduraFeminino =
-      0.29669 * totalComposicao -
-      0.00043 * (totalComposicao * totalComposicao) +
-      0.02963 * this.aluno.idade -
-      1.4072;
+    const densidadeCorporal =
+      1.112 -
+      0.00043499 * somaDobras +
+      0.00000055 * Math.pow(somaDobras, 2) -
+      0.00028826 * idade;
+    const percentualGordura = (4.95 / densidadeCorporal - 4.5) * 100;
+    const percentualGorduraIdeal = 16.0;
+    const pesoGordo = pesoAtual * (percentualGordura / 100);
+    const pesoMagro = pesoAtual - pesoGordo;
+    const pesoIdeal = pesoMagro / (1 - percentualGorduraIdeal / 100);
+    const pesoResidual = 19.28;
+    const pesoMuscular = pesoMagro - pesoResidual;
+    const percentualPesoMuscular = (pesoMuscular / pesoAtual) * 100;
 
-    const pesoAtual = this.dadosAvaliacao.pesoAtual;
-    const alturaEmCm = this.dadosAvaliacao.altura * 100;
+    console.log('Densidade Corporal:', densidadeCorporal.toFixed(5));
+    console.log('% Gordura:', percentualGordura.toFixed(2));
+    console.log('Peso Gordo (kg):', pesoGordo.toFixed(2));
+    console.log('Peso Magro (kg):', pesoMagro.toFixed(2));
+    console.log('Peso Ideal (kg):', pesoIdeal.toFixed(2));
+    console.log('Peso Residual (kg):', pesoResidual.toFixed(2));
+    console.log('Peso Muscular (kg):', pesoMuscular.toFixed(2));
+    console.log('% Peso Muscular:', percentualPesoMuscular.toFixed(2));
+    console.log('--- DEBUG FIM ---');
 
-    if (this.aluno.sexo === 'M') {
-      const percentual = percentualDeGorduraMasculino / 100;
-      const pesoGordo = pesoAtual * percentual;
-      const pesoMagro = pesoAtual - pesoGordo;
-      const pesoDesejavel = 50 + 0.91 * (alturaEmCm - 152.4);
-      const pesoResidual = pesoAtual * 0.15;
-
-      this.formData = this.fb.group({
-        percentualGorduraIdeal: [{ value: 20, disabled: true }],
-        percentualGorduraAtual: [
-          { value: percentualDeGorduraMasculino.toFixed(2), disabled: true },
-        ],
-        pesoGordo: [{ value: pesoGordo.toFixed(2), disabled: true }],
-        pesoMagro: [{ value: pesoMagro.toFixed(2), disabled: true }],
-        pesoDesejavel: [{ value: pesoDesejavel.toFixed(2), disabled: true }],
-        pesoResidual: [{ value: pesoResidual.toFixed(2), disabled: true }],
-      });
-    } else {
-      const percentual = percentualDeGorduraFeminino / 100;
-      const pesoGordo = pesoAtual * percentual;
-      const pesoMagro = pesoAtual - pesoGordo;
-      const pesoDesejavel = 45.5 + 0.91 * (alturaEmCm - 152.4);
-      const pesoResidual = pesoAtual * 0.15;
-
-      this.formData = this.fb.group({
-        percentualGorduraIdeal: [{ value: 28, disabled: true }],
-        percentualGorduraAtual: [
-          { value: percentualDeGorduraFeminino.toFixed(2), disabled: true },
-        ],
-        pesoGordo: [{ value: pesoGordo.toFixed(2), disabled: true }],
-        pesoMagro: [{ value: pesoMagro.toFixed(2), disabled: true }],
-        pesoDesejavel: [{ value: pesoDesejavel.toFixed(2), disabled: true }],
-        pesoResidual: [{ value: pesoResidual.toFixed(2), disabled: true }],
-      });
-    }
+    this.formData = this.fb.group({
+      percentualGorduraIdeal: [
+        { value: percentualGorduraIdeal.toFixed(2), disabled: true },
+      ],
+      percentualGorduraAtual: [
+        { value: percentualGordura.toFixed(2), disabled: true },
+      ],
+      pesoGordo: [{ value: pesoGordo.toFixed(2), disabled: true }],
+      pesoMagro: [{ value: pesoMagro.toFixed(2), disabled: true }],
+      pesoIdeal: [{ value: pesoIdeal.toFixed(2), disabled: true }],
+      pesoResidual: [{ value: pesoResidual.toFixed(2), disabled: true }],
+      pesoMuscular: [{ value: pesoMuscular.toFixed(2), disabled: true }],
+      percentualPesoMuscular: [
+        { value: percentualPesoMuscular.toFixed(2), disabled: true },
+      ],
+    });
   }
 
   ngAfterViewInit() {
-    this.barChartMethod();
+    this.renderizaGrafico();
   }
 
-  barChartMethod() {
-    // Now we need to supply a Chart element reference with an object that defines the type of chart we want to use, and the type of data we want to display.
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: ['Avaliação'],
-        datasets: [
-          {
-            label: 'Peso Atual',
-            data: [this.dadosAvaliacao.pesoAtual],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-            borderColor: ['rgba(255,99,132,1)'],
-            borderWidth: 1,
-          },
-          {
-            label: 'Peso Ideal',
-            data: [this.formData.get('pesoDesejavel')?.value],
-            backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgba(54, 162, 235, 1)'],
-            borderWidth: 1,
-          },
-          {
-            label: 'Peso Gordo',
-            data: [this.formData.get('pesoGordo')?.value],
-            backgroundColor: ['rgba(255, 206, 86, 0.2)'],
-            borderColor: ['rgba(255, 206, 86, 1)'],
-            borderWidth: 1,
-          },
-          {
-            label: 'Peso Magro',
-            data: [this.formData.get('pesoMagro')?.value],
-            backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-            borderColor: ['rgba(75, 192, 192, 1)'],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          // yAxes: [
-          //   {
-          //     type:'linear',
-          //     beginAtZero: true,
-          //   },
-          // ],
+  renderizaGrafico() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const pesoAtual = this.dadosAvaliacao.pesoAtual;
+    const pesoIdeal = parseFloat(this.formData.get('pesoIdeal')?.value);
+    const pesoGordo = parseFloat(this.formData.get('pesoGordo')?.value);
+    const pesoMagro = parseFloat(this.formData.get('pesoMagro')?.value);
+    const percentualGordura = parseFloat(
+      this.formData.get('percentualGorduraAtual')?.value
+    );
+    const percentualMuscular = parseFloat(
+      this.formData.get('percentualPesoMuscular')?.value
+    );
+
+    const ctx = this.graficoCanvas.nativeElement;
+
+    if (this.tipoGrafico === 'barras') {
+      this.tituloGrafico = 'Composição Corporal (kg)';
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Avaliação'],
+          datasets: [
+            {
+              label: 'Peso Atual',
+              data: [pesoAtual],
+            },
+            {
+              label: 'Peso Ideal',
+              data: [pesoIdeal],
+            },
+            {
+              label: 'Massa Gorda',
+              data: [pesoGordo],
+            },
+            {
+              label: 'Massa Magra',
+              data: [pesoMagro],
+            },
+          ],
         },
-      },
-    });
+      });
+    }
+
+    if (this.tipoGrafico === 'pizza') {
+      this.tituloGrafico = 'Distribuição Corporal (%)';
+      this.chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Gordura (%)', 'Muscular (%)', 'Outros (%)'],
+          datasets: [
+            {
+              label: '%',
+              data: [
+                percentualGordura,
+                percentualMuscular,
+                100 - percentualGordura - percentualMuscular,
+              ],
+            },
+          ],
+        },
+      });
+    }
+
+    if (this.tipoGrafico === 'comparativoPercentual') {
+      this.tituloGrafico = 'Comparativo Ideal x Atual (%)';
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Gordura', 'Massa Muscular'],
+          datasets: [
+            {
+              label: 'Atual (%)',
+              data: [percentualGordura, percentualMuscular],
+              backgroundColor: '#36a2eb',
+            },
+            {
+              label: 'Ideal (%)',
+              data: [16.0, 60.0],
+              backgroundColor: '#4bc0c0',
+            },
+          ],
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+        },
+      });
+    }
   }
 }
