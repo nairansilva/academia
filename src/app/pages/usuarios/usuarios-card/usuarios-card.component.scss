@@ -1,4 +1,52 @@
-ion-avatar{
+ion-avatar {
   align-self: center;
   align-items: center;
+}
+
+ion-card {
+  overflow: hidden;
+}
+
+ion-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+ion-card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  font-size: 1.2rem;
+}
+
+ion-card-content {
+  padding: 5;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+ion-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acoes-botoes {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 4px;
+  padding: 8px;
+  overflow-x: auto;
+}
+
+.acoes-botoes ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
 }
