@@ -22,7 +22,7 @@ export class StorageService {
     const imgRef = ref(this.storage, `${storageName}/${idImg}/${imgName}`)
 
     // uploadString
-    return uploadString(imgRef, imgFile, 'data_url')
+    return uploadBytes(imgRef, imgFile)
   }
 
   getImageId(storageName:string, id:string, imgName: string): Promise<ListResult> {

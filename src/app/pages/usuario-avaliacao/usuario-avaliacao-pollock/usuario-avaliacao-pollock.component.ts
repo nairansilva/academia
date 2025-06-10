@@ -55,79 +55,42 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
       0.02963 * this.aluno.idade -
       1.4072;
 
+    const pesoAtual = this.dadosAvaliacao.pesoAtual;
+    const alturaEmCm = this.dadosAvaliacao.altura * 100;
+
     if (this.aluno.sexo === 'M') {
+      const percentual = percentualDeGorduraMasculino / 100;
+      const pesoGordo = pesoAtual * percentual;
+      const pesoMagro = pesoAtual - pesoGordo;
+      const pesoDesejavel = 50 + 0.91 * (alturaEmCm - 152.4);
+      const pesoResidual = pesoAtual * 0.15;
+
       this.formData = this.fb.group({
         percentualGorduraIdeal: [{ value: 20, disabled: true }],
         percentualGorduraAtual: [
           { value: percentualDeGorduraMasculino.toFixed(2), disabled: true },
         ],
-        pesoGordo: [
-          {
-            value: (84 * (percentualDeGorduraMasculino / 100)).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoMagro: [
-          {
-            value: (
-              this.dadosAvaliacao.pesoAtual -
-              84 * (percentualDeGorduraMasculino / 100)
-            ).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoDesejavel: [
-          {
-            value: (
-              50 +
-              0.91 * (this.dadosAvaliacao.altura * 100 - 152.4)
-            ).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoResidual: [
-          {
-            value: (this.dadosAvaliacao.pesoAtual * 0.15).toFixed(2),
-            disabled: true,
-          },
-        ],
+        pesoGordo: [{ value: pesoGordo.toFixed(2), disabled: true }],
+        pesoMagro: [{ value: pesoMagro.toFixed(2), disabled: true }],
+        pesoDesejavel: [{ value: pesoDesejavel.toFixed(2), disabled: true }],
+        pesoResidual: [{ value: pesoResidual.toFixed(2), disabled: true }],
       });
     } else {
+      const percentual = percentualDeGorduraFeminino / 100;
+      const pesoGordo = pesoAtual * percentual;
+      const pesoMagro = pesoAtual - pesoGordo;
+      const pesoDesejavel = 45.5 + 0.91 * (alturaEmCm - 152.4);
+      const pesoResidual = pesoAtual * 0.15;
+
       this.formData = this.fb.group({
         percentualGorduraIdeal: [{ value: 28, disabled: true }],
         percentualGorduraAtual: [
           { value: percentualDeGorduraFeminino.toFixed(2), disabled: true },
         ],
-        pesoGordo: [
-          {
-            value: (84 * (percentualDeGorduraFeminino / 100)).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoMagro: [
-          {
-            value: (
-              this.dadosAvaliacao.pesoAtual -
-              84 * (percentualDeGorduraFeminino / 100)
-            ).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoDesejavel: [
-          {
-            value: (
-              45.5 +
-              0.91 * (this.dadosAvaliacao.altura * 100 - 152.4)
-            ).toFixed(2),
-            disabled: true,
-          },
-        ],
-        pesoResidual: [
-          {
-            value: (this.dadosAvaliacao.pesoAtual * 0.15).toFixed(2),
-            disabled: true,
-          },
-        ],
+        pesoGordo: [{ value: pesoGordo.toFixed(2), disabled: true }],
+        pesoMagro: [{ value: pesoMagro.toFixed(2), disabled: true }],
+        pesoDesejavel: [{ value: pesoDesejavel.toFixed(2), disabled: true }],
+        pesoResidual: [{ value: pesoResidual.toFixed(2), disabled: true }],
       });
     }
   }

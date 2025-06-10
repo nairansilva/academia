@@ -19,14 +19,21 @@ export class PhotoService {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
-      quality: 100,
+      quality: 60,
     });
 
-    const savedImageFile = await this.savePicture(capturedPhoto);
+    const blob = await this.getBlob(capturedPhoto);
 
-    this.photos.unshift(savedImageFile);
+    return {
+      blob,
+      webviewPath: capturedPhoto.webPath,
+      filepath: `${new Date().getTime()}.jpeg`
+    };
+  }
 
-    return savedImageFile
+  private async getBlob(photo: Photo): Promise<Blob> {
+    const response = await fetch(photo.webPath!);
+    return await response.blob();
   }
 
   private async savePicture(photo: Photo) {

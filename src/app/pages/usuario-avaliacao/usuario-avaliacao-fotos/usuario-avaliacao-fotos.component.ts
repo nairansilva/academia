@@ -7,7 +7,7 @@ import {
   Photo,
 } from '@capacitor/camera';
 import { PhotoService } from 'src/app/shared/services/PhotoService.service';
-import { LoadingController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { getDownloadURL } from '@angular/fire/storage';
 
 @Component({
@@ -38,14 +38,16 @@ export class UsuarioAvaliacaoFotosComponent implements OnInit {
     private loadingCtrl: LoadingController,
     public photoService: PhotoService,
     private storageService: StorageService,
-    private platform: Platform
+    private platform: Platform,
+    private alertCtrl: AlertController,
+
   ) {
     this.platform.backButton.subscribeWithPriority(5, () => {
       this.setOpen(false);
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.listaPhotos();
   }
 
@@ -54,41 +56,65 @@ export class UsuarioAvaliacaoFotosComponent implements OnInit {
   }
 
   async cliquePhoto(photo: any) {
-    this.loading = await this.loadingCtrl.create({
-      message: 'excluindo Fotos...',
-    });
-    this.photoSelected = photo;
-    await this.storageService.deletePicture(
-      'avaliacao',
-      String(this.idAvaliacao),
-      photo.name
-    );
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmação',
+      message: 'Deseja realmente excluir esta foto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Excluir',
+          handler: async () => {
+            this.loading = await this.loadingCtrl.create({
+              message: 'Excluindo foto...',
+            });
+            await this.loading.present();
 
-    this.listaPhotos();
+            this.photoSelected = photo;
+
+            await this.storageService.deletePicture(
+              'avaliacao',
+              String(this.idAvaliacao),
+              photo.name
+            );
+
+            await this.fecharLoading();
+            await this.listaPhotos();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async listaPhotos() {
     this.listPhotos = [];
+
     this.loading = await this.loadingCtrl.create({
       message: 'Buscando Fotos...',
     });
-    let nContator = 0;
+    await this.loading.present();
+
+    await new Promise(resolve => setTimeout(resolve, 300)); // Delay visual
+
     const images = await this.storageService.getImages(
       'avaliacao',
       String(this.idAvaliacao)
     );
+
     if (images.items.length > 0) {
-      images.items.forEach((image, index) => {
-        const url = getDownloadURL(image);
-        url.then((res) => {
-          this.listPhotos.push({ photo: res, name: image.name });
-          nContator++;
-          if ((nContator = images.items.length)) {
-            this.loading.dismiss();
-          }
-        });
+      const downloadPromises = images.items.map(async (image) => {
+        const res = await getDownloadURL(image);
+        this.listPhotos.push({ photo: res, name: image.name });
       });
+
+      await Promise.all(downloadPromises); // espera todas as imagens serem carregadas
     }
+
+    await this.fecharLoading();
   }
 
   async novaFoto() {
@@ -96,10 +122,23 @@ export class UsuarioAvaliacaoFotosComponent implements OnInit {
 
     await this.storageService.uploadPicture(
       'avaliacao',
-      newPicture.base64Data,
+      newPicture.blob,
       String(this.idAvaliacao),
       newPicture.filepath
     );
-    this.listaPhotos();
+
+    await this.listaPhotos();
+  }
+
+  private async fecharLoading() {
+    if (this.loading) {
+      try {
+        await this.loading.dismiss();
+      } catch (e) {
+        // já foi fechado ou não existe
+      } finally {
+        this.loading = null;
+      }
+    }
   }
 }
