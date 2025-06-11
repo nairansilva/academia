@@ -6,6 +6,7 @@ import { UsuarioTreinosService } from '../../usuario-treinos/shared/usuario-trei
 import { UsuarioAvaliacaoService } from '../shared/usuario-avaliacao.service';
 import { UsuarioAvaliacaoInterface } from '../shared/usuario-avaliacao.model';
 import { DecimalPipe } from '@angular/common';
+import { AlunosInterface } from '../../usuarios/shared/alunos.model';
 
 @Component({
   selector: 'app-usuario-avaliacao-form',
@@ -18,6 +19,7 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
   isToastOpen: boolean = false;
   messageToast = '';
   idUsuario: string | null;
+  aluno:AlunosInterface;
   idAvaliacao: string | null;
   tituloDaPagina = 'Nova Avaliação';
   isEdicao = false;
@@ -34,6 +36,10 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
   ) {
     this.idUsuario = this.route.snapshot.paramMap.get('idUsuario');
     this.idAvaliacao = this.route.snapshot.paramMap.get('id');
+
+    this.aluno = JSON.parse(
+      String(sessionStorage.getItem('usuarioLogado'))
+    );
 
     this.formData = this.fb.group({
       idUsuario: [this.idUsuario],

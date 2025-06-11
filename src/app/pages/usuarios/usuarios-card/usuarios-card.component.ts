@@ -124,7 +124,7 @@ export class UsuariosCardComponent implements OnInit {
     sessionStorage.removeItem('usuarioLogado')
     sessionStorage.setItem('usuarioLogado', JSON.stringify(this.usuario))
     this.router.navigate(['admin/usuarioavaliacao'], {
-      queryParams: { usuario: this.usuario.nome, id: this.usuario.id },
+      queryParams: { usuario: this.usuario.nome, id: this.usuario.id, sexo: this.usuario.sexo },
     });
   }
 }

@@ -36,6 +36,7 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const idade = this.aluno.idade;
+    const sexo = this.aluno.sexo;
     const pesoAtual = this.dadosAvaliacao.pesoAtual;
     const alturaEmCm = this.dadosAvaliacao.altura * 100;
 
@@ -50,18 +51,31 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
 
     console.log('--- DEBUG INÍCIO (Pollock/Jackson 7 dobras) ---');
     console.log('Idade:', idade);
-    console.log('Sexo:', this.aluno.sexo);
+    console.log('Sexo:', sexo);
     console.log('Peso Atual:', pesoAtual);
     console.log('Altura (cm):', alturaEmCm);
     console.log('Soma das 7 dobras (mm):', somaDobras);
 
-    const densidadeCorporal =
-      1.112 -
-      0.00043499 * somaDobras +
-      0.00000055 * Math.pow(somaDobras, 2) -
-      0.00028826 * idade;
+    let densidadeCorporal = 0;
+    let percentualGorduraIdeal = 0;
+
+    if (sexo === 'M') {
+      densidadeCorporal =
+        1.112 -
+        0.00043499 * somaDobras +
+        0.00000055 * Math.pow(somaDobras, 2) -
+        0.00028826 * idade;
+      percentualGorduraIdeal = 16.0;
+    } else if (sexo === 'F') {
+      densidadeCorporal =
+        1.097 -
+        0.00046971 * somaDobras +
+        0.00000056 * Math.pow(somaDobras, 2) -
+        0.00012828 * idade;
+      percentualGorduraIdeal = 22.0;
+    }
+
     const percentualGordura = (4.95 / densidadeCorporal - 4.5) * 100;
-    const percentualGorduraIdeal = 16.0;
     const pesoGordo = pesoAtual * (percentualGordura / 100);
     const pesoMagro = pesoAtual - pesoGordo;
     const pesoIdeal = pesoMagro / (1 - percentualGorduraIdeal / 100);
@@ -96,7 +110,6 @@ export class UsuarioAvaliacaoPollockComponent implements OnInit, AfterViewInit {
       ],
     });
   }
-
   ngAfterViewInit() {
     this.renderizaGrafico();
   }
