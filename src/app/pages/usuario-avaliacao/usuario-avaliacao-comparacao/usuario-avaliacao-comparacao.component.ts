@@ -7,13 +7,13 @@ import { Chart } from 'chart.js';
   templateUrl: './usuario-avaliacao-comparacao.component.html',
   styleUrls: ['./usuario-avaliacao-comparacao.component.scss'],
 })
-export class UsuarioAvaliacaoComparacaoComponent  implements OnInit {
-
+export class UsuarioAvaliacaoComparacaoComponent implements OnInit {
   constructor(private modalCtrl: ModalController) {}
-
 
   @Input() dados: any[] = [];
   @ViewChild('graficoCanvas') graficoCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('graficoForcaCanvas')
+  graficoForcaCanvas!: ElementRef<HTMLCanvasElement>;
 
   labels: string[] = [];
   chart: Chart | undefined;
@@ -76,8 +76,8 @@ export class UsuarioAvaliacaoComparacaoComponent  implements OnInit {
       };
     };
 
-    const d1:any = mapDados(a1);
-    const d2:any = mapDados(a2);
+    const d1: any = mapDados(a1);
+    const d2: any = mapDados(a2);
 
     const indicadores = ['pesoAtual', 'pesoMagro', 'pesoGordo', '% Gordura'];
 
@@ -114,7 +114,55 @@ export class UsuarioAvaliacaoComparacaoComponent  implements OnInit {
         },
       },
     });
+
+    // Novo gráfico de força com agrupamento por avaliação
+    const labels = ['Flexões', 'Abdominais'];
+
+    const datasetsForca = [
+      {
+        label: labelsDatas[0],
+        data: [
+          a1.totalFlexoes ?? 0,
+          a1.totalAbdominais ?? 0,
+        ],
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+      },
+      {
+        label: labelsDatas[1],
+        data: [
+          a2.totalFlexoes ?? 0,
+          a2.totalAbdominais ?? 0,
+        ],
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+      },
+    ];
+
+    new Chart(this.graficoForcaCanvas.nativeElement.getContext('2d')!, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: datasetsForca,
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Repetições',
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      },
+    });
   }
+
 
   dismiss() {
     // fechar modal se precisar
@@ -123,5 +171,4 @@ export class UsuarioAvaliacaoComparacaoComponent  implements OnInit {
   fechar() {
     this.modalCtrl.dismiss();
   }
-
 }
