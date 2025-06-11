@@ -18,6 +18,7 @@ export class UsuariosComponent {
     private loadingCtrl: LoadingController
   ) {}
 
+  lastDoc: any = null;
   imagem = '';
   pagina = 1;
   filtro = '';
@@ -30,10 +31,10 @@ export class UsuariosComponent {
   }
 
   ionViewWillEnter() {
-    // this.ngOnInit();
+    this.filtro = '';
     this.pagina = 1;
+    this.lastDoc = null;
     this.usuarios = [];
-    this.router.navigate(['admin//usuarios']);
     this.listaAlunos();
   }
 
@@ -42,35 +43,39 @@ export class UsuariosComponent {
   }
 
   listaAlunos() {
-    const lastName = this.usuarios[this.usuarios.length - 1]
-      ? this.usuarios[this.usuarios.length - 1].nome
-      : '';
     this.usuariosService
-      .getAlunos(this.filtro, this.pagina, lastName)
+      .getAlunos(this.filtro, this.lastDoc)
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
+          if (res.length) {
+            this.lastDoc = res[res.length - 1]['__snapshot']; // snapshot do último doc
+          }
           this.pagina === 1
             ? (this.usuarios = res)
             : (this.usuarios = this.usuarios.concat(res));
-          // this.usuarios = res
-          // this.usuarios = this.usuarios.concat(res);
           if (this.loading) this.loading.dismiss();
         },
         error: (error) => {
           console.error(error);
-          this.loading.dismiss();
+          if (this.loading) this.loading.dismiss();
         },
       });
   }
 
   async buscaAlunos(busca: any) {
+    const valorBusca = (busca.detail.value || '').trim();
+
+    this.filtro = valorBusca;
+    this.lastDoc = null;
+    this.pagina = 1;
+    this.usuarios = [];
+
     this.loading = await this.loadingCtrl.create({
-      message: 'Buscando Usuários...',
+      message: this.filtro ? 'Buscando Usuários...' : 'Carregando todos os usuários...',
     });
 
-    this.loading.present();
-    this.filtro = busca.detail.value;
-    this.usuarios = [];
+    await this.loading.present();
+
     this.listaAlunos();
   }
 
@@ -83,12 +88,11 @@ export class UsuariosComponent {
   }
 
   async registroExcluido() {
-    this.loading = await this.loadingCtrl.create({
-      message: 'Atualizando Usuários...',
-    });
-
-    this.loading.present();
+    this.loading = await this.loadingCtrl.create({ message: 'Atualizando Usuários...' });
+    await this.loading.present();
     this.usuarios = [];
+    this.lastDoc = null;
+    this.pagina = 1;
     this.listaAlunos();
   }
 }

@@ -20,6 +20,7 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   usuario: AlunosInterface = {
     id: '',
     nome: '',
+    nome_lower:'',
     sexo: '',
     password: '',
     email: '',
@@ -55,6 +56,7 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   listaAvaliacoes() {
     this.usuarioAvaliacaoService.getByIdUsuario(this.usuario.id).subscribe({
       next: (res) => {
+        console.log('avaliações', res)
         this.avaliacoesUsuario = res;
         if (this.loading) this.loading.dismiss();
       },
@@ -78,4 +80,5 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   cancelar(){
     this.router.navigate(['admin/usuarios'])
   }
+
 }

@@ -5,24 +5,31 @@
 </ion-header>
 <ion-content>
   <div [formGroup]="formData">
-    <ion-segment
-      value="composicao"
-      color="primary"
-      (ionChange)="trocaSegmento($event)"
-    >
-      <ion-segment-button value="composicao">
-        <ion-label>Comp.</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="perimetros">
-        <ion-label>Per.</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="resultado">
-        <ion-label>Avaliação</ion-label>
-      </ion-segment-button>
-      <ion-segment-button *ngIf="isEdicao" value="fotos">
-        <ion-label>Fotos</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+    <div style="overflow-x: auto; white-space: nowrap; padding: 8px 0;">
+      <ion-segment
+        scrollable
+        value="composicao"
+        color="primary"
+        (ionChange)="trocaSegmento($event)"
+      >
+        <ion-segment-button value="composicao">
+          <ion-label>Comp.</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="perimetros">
+          <ion-label>Per.</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="forca">
+          <ion-label>Força</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="resultado">
+          <ion-label>Avaliação</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngIf="isEdicao" value="fotos">
+          <ion-label>Fotos</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
     <div *ngIf="segmento === 'composicao'">
       <ion-item class="ion-item">
         <ion-input
@@ -171,6 +178,78 @@
         ></ion-input>
       </ion-item>
     </div>
+    <div *ngIf="segmento === 'forca'">
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Total de Flexões"
+          label-placement="floating"
+          formControlName="totalFlexoes"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-item">
+        <ion-input
+          type="number"
+          label="Total de Abdominais"
+          label-placement="floating"
+          formControlName="totalAbdominais"
+        ></ion-input>
+      </ion-item>
+
+      <ion-card class="tabela-referencia">
+        <ion-card-header>
+          <ion-card-title>Referência – Flexão (Masculino)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <table class="tabela-estilizada">
+            <thead>
+              <tr>
+                <th>Idade</th>
+                <th>Excelente</th>
+                <th>Bom</th>
+                <th>Regular</th>
+                <th>Fraco</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>15-19</td><td>40+</td><td>30-39</td><td>20-29</td><td>&lt;20</td></tr>
+              <tr><td>20-29</td><td>35+</td><td>25-34</td><td>15-24</td><td>&lt;15</td></tr>
+              <tr><td>30-39</td><td>30+</td><td>20-29</td><td>12-19</td><td>&lt;12</td></tr>
+              <tr><td>40-49</td><td>25+</td><td>15-24</td><td>10-14</td><td>&lt;10</td></tr>
+              <tr><td>50+</td>   <td>20+</td><td>10-19</td><td>5-9</td><td>&lt;5</td></tr>
+            </tbody>
+          </table>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tabela-referencia">
+        <ion-card-header>
+          <ion-card-title>Referência – Abdominal Tradicional (Masculino)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <table class="tabela-estilizada">
+            <thead>
+              <tr>
+                <th>Idade</th>
+                <th>Excelente</th>
+                <th>Bom</th>
+                <th>Regular</th>
+                <th>Fraco</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>15-19</td><td>55+</td><td>45-54</td><td>35-44</td><td>&lt;35</td></tr>
+              <tr><td>20-29</td><td>50+</td><td>40-49</td><td>30-39</td><td>&lt;30</td></tr>
+              <tr><td>30-39</td><td>45+</td><td>35-44</td><td>25-34</td><td>&lt;25</td></tr>
+              <tr><td>40-49</td><td>40+</td><td>30-39</td><td>20-29</td><td>&lt;20</td></tr>
+              <tr><td>50+</td>   <td>35+</td><td>25-34</td><td>15-24</td><td>&lt;15</td></tr>
+            </tbody>
+          </table>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
     <div *ngIf="segmento === 'resultado'">
       <app-usuario-avaliacao-pollock
         [dadosAvaliacao]="formData.value"

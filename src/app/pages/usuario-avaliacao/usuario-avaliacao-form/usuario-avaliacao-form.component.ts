@@ -62,6 +62,8 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       pesoMagro: [],
       pesoDesejavel: [],
       pesoResidual: [],
+      totalFlexoes:[],
+      totalAbdominais:[]
     });
 
     // this.formData.valueChanges.subscribe((val) => {
@@ -126,6 +128,8 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       pesoMagro: avaliacao.pesoMagro,
       pesoDesejavel: avaliacao.pesoDesejavel,
       pesoResidual: avaliacao.pesoResidual,
+      totalFlexoes: avaliacao.totalFlexoes,
+      totalAbdominais: avaliacao.totalAbdominais
     });
   }
 

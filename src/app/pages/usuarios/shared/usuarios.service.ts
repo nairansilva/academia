@@ -1,117 +1,123 @@
-import { Injectable } from '@angular/core';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  doc,
-  docData,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  getDoc,
-  where,
-  limit,
-  orderBy,
-  startAfter,
-  endAt,
-  query,
-} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { AlunosInterface } from './alunos.model';
-import { StorageService } from 'src/app/shared/services/storage.service';
+  import { Injectable } from '@angular/core';
+  import {
+    Firestore,
+    collection,
+    collectionData,
+    doc,
+    docData,
+    addDoc,
+    deleteDoc,
+    updateDoc,
+    getDoc,
+    where,
+    limit,
+    orderBy,
+    startAfter,
+    endAt,
+    query,
+    QueryDocumentSnapshot,
+    QueryConstraint,
+    getDocs,
+  } from '@angular/fire/firestore';
+  import { Observable } from 'rxjs';
+  import { AlunosInterface } from './alunos.model';
+  import { StorageService } from 'src/app/shared/services/storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class UsuariosService {
-  constructor(
-    private firestore: Firestore,
-    private storageService: StorageService
-  ) {}
+  @Injectable({
+    providedIn: 'root',
+  })
+  export class UsuariosService {
+    constructor(
+      private firestore: Firestore,
+      private storageService: StorageService
+    ) {}
 
-  private dbName = 'usuarios';
+    private dbName = 'usuarios';
 
-  getAlunos(
-    filtro = '',
-    page = 1,
-    teste: string = ''
-  ): Observable<AlunosInterface[]> {
-    const usuarios = collection(this.firestore, this.dbName);
-    const pageSize = 10;
-    let organizationsQuery: any;
+    getAlunos(filtro = '', startAfterDoc: any = null): Observable<AlunosInterface[]> {
+      const usuariosRef = collection(this.firestore, this.dbName);
+      const constraints: QueryConstraint[] = [];
 
-    if (teste.length > 0) {
-      organizationsQuery = query(
-        usuarios,
-        where('nome', '>=', filtro),
-        limit(pageSize),
-        orderBy('nome', 'asc'),
-        startAfter(teste)
-      );
-    } else {
-      organizationsQuery = query(
-        usuarios,
-        where('nome', '>=', filtro),
-        limit(pageSize),
-        orderBy('nome', 'asc')
-      );
+      if (filtro) {
+        constraints.push(
+          orderBy('nome'),
+          where('nome', '>=', filtro),
+          where('nome', '<=', filtro + '\uf8ff'),
+          limit(10)
+        );
+      } else {
+        constraints.push(orderBy('nome'), limit(10));
+      }
+
+      if (startAfterDoc) {
+        constraints.push(startAfter(startAfterDoc));
+      }
+
+      const q = query(usuariosRef, ...constraints);
+
+      return new Observable((observer) => {
+        getDocs(q).then(snapshot => {
+          const result = snapshot.docs.map(doc => {
+            const data = doc.data() as AlunosInterface;
+            return { ...data, id: doc.id, __snapshot: doc };
+          });
+          observer.next(result);
+          observer.complete();
+        }).catch(error => observer.error(error));
+      });
     }
-    // this.firestore.colle
-    return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
-      AlunosInterface[]
-    >;
-  }
 
-  getByEmail(filtro = ''): Observable<AlunosInterface[]> {
-    const usuarios = collection(this.firestore, this.dbName);
-    const pageSize = 10;
-    let organizationsQuery: any;
 
-    organizationsQuery = query(
-      usuarios,
-      where('email', '==', filtro),
-    );
-    return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
-      AlunosInterface[]
-    >;
-  }
+    getByEmail(filtro = ''): Observable<AlunosInterface[]> {
+      const usuarios = collection(this.firestore, this.dbName);
+      const pageSize = 10;
+      let organizationsQuery: any;
 
-  getById(id: string): Promise<any> {
-    const usuarios = collection(this.firestore, this.dbName);
-    const placeRef = doc(this.firestore, this.dbName, id);
-    return getDoc(placeRef);
-  }
+      organizationsQuery = query(
+        usuarios,
+        where('email', '==', filtro),
+      );
+      return collectionData(organizationsQuery, { idField: 'id' }) as Observable<
+        AlunosInterface[]
+      >;
+    }
 
-  postAluno(aluno: AlunosInterface): Promise<any> {
-    // [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10].forEach(async (element,index) => {
-    //   const usuarios = collection(this.firestore, 'usuarios');
-    //   aluno= {
-    //     id:'',
-    //     nome: 'nairan'+index,
-    //     password:'123456',
-    //     email: 'teste@teste.com',
-    //     telefone: 11,
-    //     idade:11,
-    //     objetivos:'string',
-    //     perfil:1
-    //   }
-    //   await addDoc(usuarios, aluno);
-    // });
-    const usuarios = collection(this.firestore, this.dbName);
-    return addDoc(usuarios, aluno);
-  }
+    getById(id: string): Promise<any> {
+      const usuarios = collection(this.firestore, this.dbName);
+      const placeRef = doc(this.firestore, this.dbName, id);
+      return getDoc(placeRef);
+    }
 
-  getPictures(userId: string): Promise<any> {
-    return this.storageService.getImages(this.dbName, userId);
-  }
+    postAluno(aluno: AlunosInterface): Promise<any> {
+      // [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10].forEach(async (element,index) => {
+      //   const usuarios = collection(this.firestore, 'usuarios');
+      //   aluno= {
+      //     id:'',
+      //     nome: 'nairan'+index,
+      //     password:'123456',
+      //     email: 'teste@teste.com',
+      //     telefone: 11,
+      //     idade:11,
+      //     objetivos:'string',
+      //     perfil:1
+      //   }
+      //   await addDoc(usuarios, aluno);
+      // });
+      const usuarios = collection(this.firestore, this.dbName);
+      return addDoc(usuarios, aluno);
+    }
 
-  putAluno(objectInput: { [x: string]: any }, id: string) {
-    const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
-    return updateDoc(placeRef, objectInput);
-  }
+    getPictures(userId: string): Promise<any> {
+      return this.storageService.getImages(this.dbName, userId);
+    }
 
-  deleteAluno(id: string) {
-    const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
-    return deleteDoc(placeRef);
+    putAluno(objectInput: { [x: string]: any }, id: string) {
+      const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
+      return updateDoc(placeRef, objectInput);
+    }
+
+    deleteAluno(id: string) {
+      const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
+      return deleteDoc(placeRef);
+    }
   }
-}

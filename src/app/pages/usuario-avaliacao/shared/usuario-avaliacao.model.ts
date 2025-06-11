@@ -1,4 +1,6 @@
 export interface UsuarioAvaliacaoInterface{
+  totalAbdominais: number;
+  totalFlexoes: number;
   id:string;
   idUsuario:string;
   dataAvaliacao:string;

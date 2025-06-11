@@ -1,0 +1,21 @@
+.tabela-referencia {
+  margin-top: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.tabela-estilizada {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+}
+
+.tabela-estilizada th,
+.tabela-estilizada td {
+  border: 1px solid #ddd;
+  padding: 6px;
+}
+
+.tabela-estilizada thead {
+  background-color: #f1f1f1;
+}
