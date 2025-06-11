@@ -16,6 +16,8 @@ import {
 export class UsuarioAvaliacaoCardComponent implements OnInit {
   @Input() usuarioNome: string;
   @Input() avalicao: UsuarioAvaliacaoInterface;
+  @Input() selecionavel = false;
+  @Input() selecionado = false;
   @Output() registroExcluido = new EventEmitter();
   constructor(
     private router: Router,

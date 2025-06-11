@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Comparativo de Avaliações</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fechar()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <!-- Exibir JSON ainda (se quiser debug visual) -->
+  <!-- <ion-card>
+    <ion-card-header>
+      <ion-card-title>Dados Recebidos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <pre>{{ dados | json }}</pre>
+    </ion-card-content>
+  </ion-card> -->
+
+  <!-- Canvas com gráfico comparativo -->
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Composição Corporal</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <canvas
+          #graficoCanvas
+          style="max-height: 300px; width: 100%"
+        ></canvas>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

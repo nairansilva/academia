@@ -13,6 +13,8 @@
     <app-usuario-avaliacao-card
       [avalicao]="avaliacao"
       [usuarioNome]="usuario.nome"
+      [selecionado]="avaliacoesSelecionadas.includes(avaliacao)"
+      (click)="selecionarAvaliacao(avaliacao)"
     ></app-usuario-avaliacao-card>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
@@ -20,9 +22,16 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll> -->
+
+  <ion-button
+    class="comp-button"
+    expand="block"
+    color="primary"
+    (click)="executarComparacao()"
+    [disabled]="avaliacoesSelecionadas.length !== 2"
+  >
+    Comparar Avaliações
+  </ion-button>
 
   <ion-button
     class="cancel-button"
