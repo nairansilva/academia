@@ -3,3 +3,32 @@
   box-shadow: 0 0 12px rgba(82, 183, 136, 0.4) !important;
   transform: scale(0.98);
 }
+
+.linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.data-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.data-texto {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+
+  ion-button {
+    --padding-start: 14px;
+    --padding-end: 14px;
+    font-size: 1.2rem;
+  }
+}

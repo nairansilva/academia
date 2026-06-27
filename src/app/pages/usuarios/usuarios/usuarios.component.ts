@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { UsuariosService } from './../shared/usuarios.service';
 import { AlunosInterface } from '../shared/alunos.model';
 
@@ -8,17 +10,29 @@ import { AlunosInterface } from '../shared/alunos.model';
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss'],
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnDestroy {
   constructor(
     private usuariosService: UsuariosService,
     private router: Router,
-  ) {}
+  ) {
+    this.searchSubject.pipe(debounceTime(1000)).subscribe(termo => {
+      this.aplicarFiltro(termo);
+      this.buscando = false;
+    });
+  }
 
   private todosAlunos: AlunosInterface[] = [];
   usuarios: AlunosInterface[] = [];
+  buscando = false;
+
+  private searchSubject = new Subject<string>();
 
   ionViewWillEnter() {
     this.carregarTodos();
+  }
+
+  ngOnDestroy() {
+    this.searchSubject.complete();
   }
 
   novoUsuario() {
@@ -36,9 +50,15 @@ export class UsuariosComponent {
   }
 
   buscaAlunos(busca: any) {
-    const termo = (busca.detail.value || '').trim().toLowerCase();
-    this.usuarios = termo
-      ? this.todosAlunos.filter(u => u.nome?.toLowerCase().includes(termo))
+    const termo = (busca.detail.value || '').trim();
+    this.buscando = true;
+    this.searchSubject.next(termo);
+  }
+
+  private aplicarFiltro(termo: string) {
+    const t = termo.toLowerCase();
+    this.usuarios = t
+      ? this.todosAlunos.filter(u => u.nome?.toLowerCase().includes(t))
       : this.todosAlunos;
   }
 

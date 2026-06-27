@@ -215,18 +215,21 @@ export class UsuarioAvaliacaoComparacaoComponent implements OnInit {
         await Share.share({ title: 'Comparativo de Avaliações', files: [uri] });
         await Filesystem.deleteFile({ path: fileName, directory: Directory.Cache });
       } else {
-        await new Promise<void>((resolve) => {
-          output.toBlob((blob) => {
-            if (!blob) { resolve(); return; }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.click();
-            URL.revokeObjectURL(url);
-            resolve();
-          }, 'image/png');
-        });
+        const blob = await new Promise<Blob>((resolve, reject) =>
+          output.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png')
+        );
+        const file = new File([blob], fileName, { type: 'image/png' });
+        const nav = navigator as any;
+        if (nav.canShare?.({ files: [file] })) {
+          await nav.share({ files: [file], title: 'Comparativo de Avaliações' });
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          URL.revokeObjectURL(url);
+        }
       }
     } finally {
       await loading.dismiss();

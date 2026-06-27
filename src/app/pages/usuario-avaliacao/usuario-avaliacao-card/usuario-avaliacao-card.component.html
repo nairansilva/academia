@@ -1,25 +1,18 @@
 <ion-card [class.card-selecionado]="selecionado">
-  <ion-card-header>
-    <ion-card-title>{{ usuarioNome }}</ion-card-title>
-  </ion-card-header>
   <ion-card-content>
-    <ion-list>
-      <ion-item>
-        <ion-icon name="calendar" slot="start" color="primary"></ion-icon>
-        <ion-label
-          ><b>Data da Avaliação: </b>{{ avalicao.dataAvaliacao | date:'dd/MM/yyyy' }}</ion-label
-        >
-      </ion-item>
-    </ion-list>
+    <div class="linha">
+      <div class="data-row">
+        <ion-icon name="calendar-outline" color="primary"></ion-icon>
+        <span class="data-texto">{{ avalicao.dataAvaliacao | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="acoes">
+        <ion-button fill="clear" color="primary" (click)="editar()">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="danger" (click)="excluir()">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
   </ion-card-content>
-  <div class="ion-text-end">
-    <ion-button fill="clear" color="primary" (click)="editar()">
-      <ion-icon slot="end" name="build"></ion-icon>
-      Editar</ion-button
-    >
-    <ion-button fill="clear" color="danger" (click)="excluir()">
-      <ion-icon slot="end" name="trash"></ion-icon>
-      Excluir</ion-button
-    >
-  </div>
 </ion-card>

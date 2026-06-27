@@ -6,11 +6,11 @@
     <ion-item class="search-item">
       <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
       <ion-input
-        [debounce]="2000"
         (ionInput)="buscaAlunos($event)"
         placeholder="Busca de Alunos"
         clearInput="true"
       ></ion-input>
+      <ion-spinner *ngIf="buscando" slot="end" name="crescent" color="primary"></ion-spinner>
     </ion-item>
   </div>
 </ion-header>

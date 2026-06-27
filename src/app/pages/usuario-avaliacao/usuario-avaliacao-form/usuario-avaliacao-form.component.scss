@@ -25,6 +25,10 @@ ion-segment {
   margin: 8px 0;
 }
 
+ion-content {
+  --padding-bottom: 16px;
+}
+
 ion-segment-button {
   --color: #888888;
   --color-checked: var(--academia-accent);

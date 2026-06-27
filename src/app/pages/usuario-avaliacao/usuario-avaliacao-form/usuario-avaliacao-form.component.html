@@ -11,17 +11,21 @@
         color="primary"
         (ionChange)="trocaSegmento($event)"
       >
-        <ion-segment-button value="composicao">
-          <ion-label>Comp.</ion-label>
+        <ion-segment-button value="composicao" title="Composição Corporal">
+          <ion-icon name="body-outline"></ion-icon>
+          <ion-label>Corpo</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="perimetros">
-          <ion-label>Per.</ion-label>
+        <ion-segment-button value="perimetros" title="Perímetros">
+          <ion-icon name="resize-outline"></ion-icon>
+          <ion-label>Medidas</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="forca">
+        <ion-segment-button value="forca" title="Força Muscular">
+          <ion-icon name="barbell-outline"></ion-icon>
           <ion-label>Força</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="resultado">
-          <ion-label>Avaliação</ion-label>
+        <ion-segment-button value="resultado" title="Resultado da Avaliação">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          <ion-label>Result.</ion-label>
         </ion-segment-button>
       </ion-segment>
     </div>
