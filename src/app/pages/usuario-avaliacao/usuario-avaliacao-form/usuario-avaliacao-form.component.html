@@ -5,9 +5,8 @@
 </ion-header>
 <ion-content>
   <div [formGroup]="formData">
-    <div style="overflow-x: auto; white-space: nowrap; padding: 8px 0;">
+    <div style="padding: 8px 0;">
       <ion-segment
-        scrollable
         value="composicao"
         color="primary"
         (ionChange)="trocaSegmento($event)"
@@ -24,13 +23,10 @@
         <ion-segment-button value="resultado">
           <ion-label>Avaliação</ion-label>
         </ion-segment-button>
-        <ion-segment-button *ngIf="isEdicao" value="fotos">
-          <ion-label>Fotos</ion-label>
-        </ion-segment-button>
       </ion-segment>
     </div>
 
-    <div *ngIf="segmento === 'composicao'">
+    <div [hidden]="segmento !== 'composicao'">
       <ion-item class="ion-item">
         <ion-input
           type="date"
@@ -112,7 +108,7 @@
         ></ion-input>
       </ion-item>
     </div>
-    <div *ngIf="segmento === 'perimetros'">
+    <div [hidden]="segmento !== 'perimetros'">
       <ion-item class="ion-item">
         <ion-input
           type="number"
@@ -178,7 +174,7 @@
         ></ion-input>
       </ion-item>
     </div>
-    <div *ngIf="segmento === 'forca'">
+    <div [hidden]="segmento !== 'forca'">
       <ion-item class="ion-item">
         <ion-input
           type="number"
@@ -293,30 +289,34 @@
 
 
     <div *ngIf="segmento === 'resultado'">
-      <app-usuario-avaliacao-pollock
-        [dadosAvaliacao]="formData.value"
-      ></app-usuario-avaliacao-pollock>
-    </div>
-    <div *ngIf="segmento === 'fotos'">
-      <app-usuario-avaliacao-fotos [idAvaliacao]="idAvaliacao"></app-usuario-avaliacao-fotos>
+      <ng-container *ngIf="formData.get('pesoAtual')?.value; else semDados">
+        <app-usuario-avaliacao-pollock
+          [dadosAvaliacao]="formData.value"
+          (calculosRealizados)="onCalculosPollock($event)"
+        ></app-usuario-avaliacao-pollock>
+      </ng-container>
+      <ng-template #semDados>
+        <div class="ion-padding ion-text-center" style="padding-top: 48px;">
+          <ion-icon name="analytics-outline" style="font-size: 56px; color: #444444; display: block; margin: 0 auto 16px;"></ion-icon>
+          <p style="color: #888888;">Preencha o peso e as dobras cutâneas na aba <strong>Comp.</strong> para ver a avaliação.</p>
+        </div>
+      </ng-template>
     </div>
   </div>
 
-  <div class="ion-text-end">
-    <ion-button
-      class="login-button"
-      expand="block"
-      (click)="salvar()"
-      color="primary"
-      [disabled]="!formData.valid"
-      >Salvar</ion-button
-    >
-    <ion-button
-      class="cancel-button"
-      expand="block"
-      (click)="cancelar()"
-      color="danger"
-      >Cancelar</ion-button
-    >
-  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="footer-toolbar">
+    <div class="botoes-footer">
+      <ion-button expand="block" color="primary" (click)="salvar()" [disabled]="!formData.valid">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Salvar
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="danger" (click)="cancelar()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

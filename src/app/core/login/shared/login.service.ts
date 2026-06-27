@@ -29,7 +29,7 @@ export class LoginService {
     this.user$.subscribe((aUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
       // console.log('tete', aUser);
-      if (aUser?.email?.toLowerCase().includes('nairan')) {
+      if (aUser?.email?.toLowerCase().includes('nairan') || aUser?.email?.toLowerCase().includes('ben')) {
         this.isAdmin = true;
       }
       localStorage.setItem('user', JSON.stringify(aUser));
@@ -94,7 +94,7 @@ export class LoginService {
       : '';
   }
 
-  fotgotPassword() {
-    sendPasswordResetEmail(this.angularFireAuth, 'nairan.asilva@gmail.com');
+  fotgotPassword(email: string) {
+    return sendPasswordResetEmail(this.angularFireAuth, email);
   }
 }

@@ -20,3 +20,65 @@
   background-color: #f1f1f1;
 }
 
+ion-segment {
+  --background: #1a1a1a;
+  margin: 8px 0;
+}
+
+ion-segment-button {
+  --color: #888888;
+  --color-checked: var(--academia-accent);
+  --indicator-color: var(--academia-accent);
+}
+
+ion-input {
+  --highlight-color-focused: var(--academia-accent);
+}
+
+ion-card-title {
+  color: #ffffff !important;
+  font-size: 0.95rem;
+}
+
+.footer-toolbar {
+  --background: #1a1a1a;
+  --border-color: #2a2a2a;
+}
+
+.botoes-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 12px;
+
+  ion-button {
+    --border-radius: 8px;
+    --box-shadow: none;
+    height: 46px;
+    margin: 0;
+  }
+}
+
+.tabela-referencia {
+  margin-top: 16px;
+}
+
+.tabela-estilizada {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: center;
+  color: #cccccc;
+}
+
+.tabela-estilizada th,
+.tabela-estilizada td {
+  border: 1px solid #333;
+  padding: 6px;
+}
+
+.tabela-estilizada thead {
+  background-color: var(--academia-accent-dark);
+  color: #ffffff;
+}
+

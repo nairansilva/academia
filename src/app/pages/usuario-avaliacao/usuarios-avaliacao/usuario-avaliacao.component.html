@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">Avaliação {{ usuario.nome }}</ion-title>
+    <ion-title slot="start" class="titulo-aluno">Avaliação — {{ usuario.nome }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -23,21 +23,23 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-button
-    class="comp-button"
-    expand="block"
-    color="primary"
-    (click)="executarComparacao()"
-    [disabled]="avaliacoesSelecionadas.length !== 2"
-  >
-    Comparar Avaliações
-  </ion-button>
-
-  <ion-button
-    class="cancel-button"
-    expand="block"
-    (click)="cancelar()"
-    color="danger"
-    >Voltar</ion-button
-  >
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="footer-toolbar">
+    <div class="botoes-footer">
+      <ion-button
+        expand="block"
+        color="primary"
+        (click)="executarComparacao()"
+        [disabled]="avaliacoesSelecionadas.length !== 2"
+      >
+        Comparar Avaliações
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="danger" (click)="cancelar()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Voltar
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

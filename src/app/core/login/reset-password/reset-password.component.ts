@@ -11,9 +11,6 @@ import { LoginService } from '../shared/login.service';
 })
 export class ResetPasswordComponent implements OnInit {
   formData: FormGroup;
-  colorHelp = 'danger';
-  isToastOpen: boolean = false;
-  loading: any;
   desabilitaLogin = false;
 
   constructor(
@@ -28,15 +25,19 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   async resetSenha() {
-    const teste = await this.loginService.fotgotPassword();
+    this.desabilitaLogin = true;
+    await this.loginService.fotgotPassword(this.formData.value.email);
+
     const alert = await this.alertController.create({
       header: 'Sucesso',
-      message: 'E-mail enviado com Sucesso.',
+      message: 'E-mail enviado com sucesso.',
       buttons: ['Ok'],
     });
-
     await alert.present();
+    this.router.navigate(['login']);
+  }
 
+  voltar() {
     this.router.navigate(['login']);
   }
 

@@ -69,7 +69,7 @@ export class UsuarioAvaliacaoCardComponent implements OnInit {
     });
 
     loading.present();
-    await this.usuarioAvaliacaoService.deleteUsuarioAvalicao(this.avalicao.id);
+    await this.usuarioAvaliacaoService.deleteUsuarioAvaliacao(this.avalicao.id);
     loading.dismiss();
     const toast = await this.toastController.create({
       message: 'Registro Exluído com Sucesso!',

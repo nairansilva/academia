@@ -1,35 +1,26 @@
-.ion-item{
-  // margin-left: 20px;
-  margin-top: 20px;
-}
-ion-list{
-  // margin-left: 20px;
-  margin-top: 20px;
-}
-
-.save-button{
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 50px;
-  --border-radius: 12px;
-  margin-top: 60px;
-  --box-shadow: none;
+.form-item {
+  --background: transparent;
+  --border-color: #2a2a2a;
+  --highlight-color-focused: var(--academia-accent);
+  margin-bottom: 8px;
+  border-radius: 8px;
 }
 
-.edit-button{
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 50px;
-  --border-radius: 12px;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  --box-shadow: none;
+.footer-toolbar {
+  --background: #1a1a1a;
+  --border-color: #2a2a2a;
 }
 
-.cancel-button{
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 50px;
-  --border-radius: 12px;
-  --box-shadow: none;
+.botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 12px;
+
+  ion-button {
+    --border-radius: 8px;
+    --box-shadow: none;
+    height: 46px;
+    margin: 0;
+  }
 }

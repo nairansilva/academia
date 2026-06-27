@@ -87,12 +87,12 @@ export class UsuarioAvaliacaoService {
     return addDoc(usuarios, aluno);
   }
 
-  putUsuarioAvaliacoa(objectInput: { [x: string]: any }, id: string) {
+  putUsuarioAvaliacao(objectInput: { [x: string]: any }, id: string) {
     const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
     return updateDoc(placeRef, objectInput);
   }
 
-  deleteUsuarioAvalicao(id: string) {
+  deleteUsuarioAvaliacao(id: string) {
     const placeRef = doc(this.firestore, `${this.dbName}/${id}`);
     return deleteDoc(placeRef);
   }

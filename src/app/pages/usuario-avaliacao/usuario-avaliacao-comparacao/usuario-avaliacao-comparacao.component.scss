@@ -1,0 +1,35 @@
+.comparacao-container {
+  padding-bottom: 8px;
+}
+
+ion-card-title {
+  color: #ffffff !important;
+  font-size: 0.95rem;
+}
+
+.segmento-tipo {
+  margin-bottom: 12px;
+  --background: #1a1a1a;
+}
+
+ion-segment-button {
+  --color: #888888;
+  --color-checked: var(--academia-accent);
+  --indicator-color: var(--academia-accent);
+}
+
+.footer-toolbar {
+  --background: #1a1a1a;
+  --border-color: #2a2a2a;
+}
+
+.rodape-modal {
+  padding: 8px 16px 12px;
+}
+
+.btn-compartilhar {
+  --background: var(--academia-accent);
+  --color: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: none;
+}

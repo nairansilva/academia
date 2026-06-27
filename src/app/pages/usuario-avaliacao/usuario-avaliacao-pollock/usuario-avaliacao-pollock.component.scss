@@ -1,0 +1,28 @@
+.pollock-container {
+  position: relative;
+}
+
+.share-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 8px 0;
+}
+
+.btn-share {
+  --color: var(--academia-accent);
+  font-size: 1.4rem;
+}
+
+ion-item {
+  --color: #cccccc;
+  --background: transparent;
+}
+
+ion-label {
+  color: #cccccc !important;
+}
+
+ion-select {
+  --color: #ffffff;
+  color: #ffffff;
+}

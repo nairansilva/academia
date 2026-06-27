@@ -2,23 +2,27 @@
   <ion-toolbar>
     <ion-title slot="start">Usuários</ion-title>
   </ion-toolbar>
-  <ion-searchbar
-    [debounce]="1000"
-    (ionChange)="buscaAlunos($event)"
-    id="open-loading"
-    placeholder="Busca de Alunos"
-  ></ion-searchbar>
+  <div class="search-wrapper">
+    <ion-item class="search-item">
+      <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+      <ion-input
+        [debounce]="2000"
+        (ionInput)="buscaAlunos($event)"
+        placeholder="Busca de Alunos"
+        clearInput="true"
+      ></ion-input>
+    </ion-item>
+  </div>
 </ion-header>
+
 <ion-content>
   <div *ngFor="let usuario of usuarios">
     <app-usuarios-card [usuario]="usuario" (registroExcluido)="registroExcluido()"></app-usuarios-card>
   </div>
+
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="novoUsuario()" size="small">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
 </ion-content>

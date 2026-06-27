@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { UsuarioTreinosService } from '../../usuario-treinos/shared/usuario-treino.service';
 import { UsuarioAvaliacaoService } from '../shared/usuario-avaliacao.service';
 import { UsuarioAvaliacaoInterface } from '../shared/usuario-avaliacao.model';
-import { DecimalPipe } from '@angular/common';
 import { AlunosInterface } from '../../usuarios/shared/alunos.model';
 
 @Component({
@@ -31,7 +29,6 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private route: ActivatedRoute,
-    private decimalPipe: DecimalPipe,
     private usuarioAvaliacaoService: UsuarioAvaliacaoService
   ) {
     this.idUsuario = this.route.snapshot.paramMap.get('idUsuario');
@@ -159,7 +156,7 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       .then((res) => {
         this.loading.dismiss();
         this.isToastOpen = true;
-        this.colorHelp = 'sucess';
+        this.colorHelp = 'success';
         this.messageToast = 'Cadastro Realizado com Sucesso';
         this.formData.reset();
         this.router.navigate(['admin/usuarioavaliacao'], {
@@ -176,11 +173,10 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
   }
 
   async putUsuarioAvaliacao() {
-    await this.usuarioAvaliacaoService;
     let alunoSemSenha = this.formData.value;
     delete alunoSemSenha.password;
     this.usuarioAvaliacaoService
-      .putUsuarioAvaliacoa(alunoSemSenha, alunoSemSenha.id)
+      .putUsuarioAvaliacao(alunoSemSenha, alunoSemSenha.id)
       .then((res) => {
         this.loading.dismiss();
         this.isToastOpen = true;
@@ -200,8 +196,11 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
       });
   }
 
+  onCalculosPollock(calculos: any) {
+    this.formData.patchValue(calculos);
+  }
+
   trocaSegmento(ev: any) {
-    console.log(ev);
     this.segmento = ev.detail.value;
   }
 
@@ -216,32 +215,5 @@ export class UsuarioAvaliacaoFormComponent implements OnInit {
     });
   }
 
-  formatarDecimal(valor: any) {
-    console.log(this.decimalPipe.transform((String(valor), '1.2-2')))
-    // console.log(valor)
-    // let amount = String(valor);
-
-    // const beforePoint = amount.split('.')[0];
-    // let integers = '';
-    // if (typeof beforePoint !== 'undefined') {
-    //   integers = beforePoint.replace(/\D+/g, '');
-    // }
-    // const afterPoint = amount.split('.')[1];
-    // let decimals = '';
-    // if (typeof afterPoint !== 'undefined') {
-    //   decimals = afterPoint.replace(/\D+/g, '');
-    // }
-    // if (decimals.length > 2) {
-    //   decimals = decimals.slice(0, 2);
-    // }
-    // amount = integers;
-    // if (typeof afterPoint === 'string') {
-    //   amount += '.';
-    // }
-    // if (decimals.length > 0) {
-    //   amount += decimals;
-    // }
-
-    // return amount;
-  }
 }
+

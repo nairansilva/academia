@@ -56,7 +56,7 @@ export class UsuarioAvaliacaoComponent implements OnInit {
   }
 
   novaAvaliacao() {
-    this.router.navigate([`admin//usuarioavaliacao/${this.usuario.id}/form`]);
+    this.router.navigate([`admin/usuarioavaliacao/${this.usuario.id}/form`]);
   }
 
   listaAvaliacoes() {

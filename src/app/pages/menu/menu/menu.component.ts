@@ -23,9 +23,7 @@ export class MenuComponent implements OnInit {
     {
       text: 'Cancelar',
       role: 'cancel',
-      handler: () => {
-        console.log('cancelei');
-      },
+      handler: () => {},
     },
     {
       text: 'OK',
@@ -50,32 +48,16 @@ export class MenuComponent implements OnInit {
 
   setResult(ev: any) {}
 
-  async ionViewDidEnter(){
-    this.loading = await this.loadingCtrl.create({
-      message: 'Buscando Dados...',
-    });
-
+  async ionViewDidEnter() {
+    this.loading = await this.loadingCtrl.create({ message: 'Carregando...' });
     await this.loading.present();
-
-    this.isAdmin = this.loginService.isUserAdmin;
-
     this.isAdmin = this.loginService.isUserAdmin;
     this.isLoading = false;
     this.loading.dismiss();
-    console.log(this.tabs)
-    // if (this.isAdmin){
-    //   this.router.navigate(['usuarios']);
-    // } else {
-    //   this.router.navigate(['treinamentos']);
-    // }
-    this.tabs.select('usuarios')
+    this.tabs.select('usuarios');
   }
 
-  async ngOnInit() {
-    console.log(this.tabs)
-
-    // this.router.navigate(['admin/usuarios']);
-  }
+  async ngOnInit() {}
 
   async logout() {
     const alert = await this.alertController.create({

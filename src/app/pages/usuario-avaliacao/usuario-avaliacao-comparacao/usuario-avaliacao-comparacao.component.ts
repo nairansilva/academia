@@ -1,6 +1,9 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-usuario-avaliacao-comparacao',
@@ -8,15 +11,27 @@ import { Chart } from 'chart.js';
   styleUrls: ['./usuario-avaliacao-comparacao.component.scss'],
 })
 export class UsuarioAvaliacaoComparacaoComponent implements OnInit {
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController, private loadingCtrl: LoadingController) {}
 
   @Input() dados: any[] = [];
   @ViewChild('graficoCanvas') graficoCanvas!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('graficoForcaCanvas')
-  graficoForcaCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('graficoForcaCanvas') graficoForcaCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('graficoPeriMetrosCanvas') graficoPeriMetrosCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('comparacaoContainer') comparacaoContainer: ElementRef<HTMLDivElement>;
 
   labels: string[] = [];
-  chart: Chart | undefined;
+  tipoComparacao: 'barras' | 'radar' = 'barras';
+
+  private a1: any;
+  private a2: any;
+  private labelsDatas: string[] = [];
+  private d1: any;
+  private d2: any;
+  private aluno: any;
+
+  private chartComposicao: Chart | undefined;
+  private chartForca: Chart | undefined;
+  private chartPerimetros: Chart | undefined;
 
   ngOnInit() {
     this.labels = this.dados.map((a) =>
@@ -27,41 +42,29 @@ export class UsuarioAvaliacaoComparacaoComponent implements OnInit {
   ngAfterViewInit() {
     if (this.dados.length !== 2) return;
 
-    const [a1, a2] = this.dados;
-    const labelsDatas = [
-      new Date(a1.dataAvaliacao).toLocaleDateString(),
-      new Date(a2.dataAvaliacao).toLocaleDateString(),
+    [this.a1, this.a2] = this.dados;
+    this.labelsDatas = [
+      new Date(this.a1.dataAvaliacao).toLocaleDateString(),
+      new Date(this.a2.dataAvaliacao).toLocaleDateString(),
     ];
 
-    // Função para calcular composição
+    this.aluno = JSON.parse(String(sessionStorage.getItem('usuarioLogado')));
+
     const mapDados = (a: any) => {
       const pesoAtual = a.pesoAtual ?? 0;
       const somaDobras = [
-        a.subscapular,
-        a.tricipital,
-        a.peitoral,
-        a.axilarMedia,
-        a.supraIliaca,
-        a.abdominal,
-        a.coxa,
+        a.subscapular, a.tricipital, a.peitoral,
+        a.axilarMedia, a.supraIliaca, a.abdominal, a.coxa,
       ].reduce((soma, val) => soma + (val ?? 0), 0);
 
-      const idade = 30;
-      const sexo = 'M';
+      const idade = this.aluno?.idade ?? 30;
+      const sexo = this.aluno?.sexo ?? 'M';
 
       let densidade = 1;
       if (sexo === 'M') {
-        densidade =
-          1.112 -
-          0.00043499 * somaDobras +
-          0.00000055 * Math.pow(somaDobras, 2) -
-          0.00028826 * idade;
+        densidade = 1.112 - 0.00043499 * somaDobras + 0.00000055 * Math.pow(somaDobras, 2) - 0.00028826 * idade;
       } else {
-        densidade =
-          1.097 -
-          0.00046971 * somaDobras +
-          0.00000056 * Math.pow(somaDobras, 2) -
-          0.00012828 * idade;
+        densidade = 1.097 - 0.00046971 * somaDobras + 0.00000056 * Math.pow(somaDobras, 2) - 0.00012828 * idade;
       }
 
       const percGordura = (4.95 / densidade - 4.5) * 100;
@@ -76,97 +79,161 @@ export class UsuarioAvaliacaoComparacaoComponent implements OnInit {
       };
     };
 
-    const d1: any = mapDados(a1);
-    const d2: any = mapDados(a2);
+    this.d1 = mapDados(this.a1);
+    this.d2 = mapDados(this.a2);
 
+    this.renderizarGraficos();
+  }
+
+  trocarTipo(ev: any) {
+    this.tipoComparacao = ev.detail.value;
+    this.renderizarGraficos();
+  }
+
+  private renderizarGraficos() {
+    this.chartComposicao?.destroy();
+    this.chartForca?.destroy();
+    this.chartPerimetros?.destroy();
+
+    const [l0, l1] = this.labelsDatas;
     const indicadores = ['pesoAtual', 'pesoMagro', 'pesoGordo', '% Gordura'];
 
-    const datasets = [
-      {
-        label: labelsDatas[0],
-        data: indicadores.map((i) => d1[i]),
-        backgroundColor: 'rgba(56, 128, 255, 0.7)',
-      },
-      {
-        label: labelsDatas[1],
-        data: indicadores.map((i) => d2[i]),
-        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-      },
-    ];
-
-    this.chart = new Chart(this.graficoCanvas.nativeElement.getContext('2d')!, {
+    this.chartComposicao = new Chart(this.graficoCanvas.nativeElement.getContext('2d')!, {
       type: 'bar',
       data: {
         labels: ['Peso Atual', 'Peso Magro', 'Peso Gordo', '% Gordura'],
-        datasets: datasets,
+        datasets: [
+          { label: l0, data: indicadores.map(i => this.d1[i]), backgroundColor: 'rgba(82,183,136,0.7)', borderColor: '#52b788', borderWidth: 1 },
+          { label: l1, data: indicadores.map(i => this.d2[i]), backgroundColor: 'rgba(45,106,79,0.7)', borderColor: '#2d6a4f', borderWidth: 1 },
+        ],
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-        },
+        plugins: { legend: { position: 'top' as const, labels: { color: '#cccccc' } } },
         scales: {
-          y: {
-            beginAtZero: true,
-          },
+          x: { ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
+          y: { beginAtZero: true, ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
         },
       },
     });
 
-    // Novo gráfico de força com agrupamento por avaliação
-    const labels = ['Flexões', 'Abdominais'];
-
-    const datasetsForca = [
-      {
-        label: labelsDatas[0],
-        data: [
-          a1.totalFlexoes ?? 0,
-          a1.totalAbdominais ?? 0,
-        ],
-        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-      },
-      {
-        label: labelsDatas[1],
-        data: [
-          a2.totalFlexoes ?? 0,
-          a2.totalAbdominais ?? 0,
-        ],
-        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-      },
-    ];
-
-    new Chart(this.graficoForcaCanvas.nativeElement.getContext('2d')!, {
+    this.chartForca = new Chart(this.graficoForcaCanvas.nativeElement.getContext('2d')!, {
       type: 'bar',
       data: {
-        labels,
-        datasets: datasetsForca,
+        labels: ['Flexões', 'Abdominais'],
+        datasets: [
+          { label: l0, data: [this.a1.totalFlexoes ?? 0, this.a1.totalAbdominais ?? 0], backgroundColor: 'rgba(82,183,136,0.7)', borderColor: '#52b788', borderWidth: 1 },
+          { label: l1, data: [this.a2.totalFlexoes ?? 0, this.a2.totalAbdominais ?? 0], backgroundColor: 'rgba(45,106,79,0.7)', borderColor: '#2d6a4f', borderWidth: 1 },
+        ],
       },
       options: {
         responsive: true,
         scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Repetições',
-            },
-          },
+          y: { beginAtZero: true, title: { display: true, text: 'Repetições', color: '#cccccc' }, ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
+          x: { ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
         },
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-        },
+        plugins: { legend: { position: 'top' as const, labels: { color: '#cccccc' } } },
       },
     });
+
+    const labelsPeri = ['Tórax', 'Cintura', 'Abdome', 'Quadril', 'Antebraços', 'Braços', 'Coxas', 'Panturrilhas'];
+    const dataPeri1 = [this.a1.torax ?? 0, this.a1.cintura ?? 0, this.a1.abdome ?? 0, this.a1.quadril ?? 0, this.a1.antebracos ?? 0, this.a1.bracos ?? 0, this.a1.coxas ?? 0, this.a1.panturrilhas ?? 0];
+    const dataPeri2 = [this.a2.torax ?? 0, this.a2.cintura ?? 0, this.a2.abdome ?? 0, this.a2.quadril ?? 0, this.a2.antebracos ?? 0, this.a2.bracos ?? 0, this.a2.coxas ?? 0, this.a2.panturrilhas ?? 0];
+
+    if (this.tipoComparacao === 'radar') {
+      this.chartPerimetros = new Chart(this.graficoPeriMetrosCanvas.nativeElement.getContext('2d')!, {
+        type: 'radar',
+        data: {
+          labels: labelsPeri,
+          datasets: [
+            { label: l0, data: dataPeri1, backgroundColor: 'rgba(82,183,136,0.2)', borderColor: '#52b788', borderWidth: 2, pointBackgroundColor: '#52b788' } as any,
+            { label: l1, data: dataPeri2, backgroundColor: 'rgba(45,106,79,0.2)', borderColor: '#2d6a4f', borderWidth: 2, pointBackgroundColor: '#2d6a4f' } as any,
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              ticks: { color: '#888888', backdropColor: 'transparent' } as any,
+              grid: { color: '#2a2a2a' },
+              pointLabels: { color: '#cccccc', font: { size: 11 } },
+            } as any,
+          },
+          plugins: { legend: { position: 'top' as const, labels: { color: '#cccccc' } } },
+        },
+      });
+    } else {
+      this.chartPerimetros = new Chart(this.graficoPeriMetrosCanvas.nativeElement.getContext('2d')!, {
+        type: 'bar',
+        data: {
+          labels: labelsPeri,
+          datasets: [
+            { label: l0, data: dataPeri1, backgroundColor: 'rgba(82,183,136,0.7)', borderColor: '#52b788', borderWidth: 1 },
+            { label: l1, data: dataPeri2, backgroundColor: 'rgba(45,106,79,0.7)', borderColor: '#2d6a4f', borderWidth: 1 },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: false, ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
+            x: { ticks: { color: '#888888' }, grid: { color: '#2a2a2a' } },
+          },
+          plugins: { legend: { position: 'top' as const, labels: { color: '#cccccc' } } },
+        },
+      });
+    }
   }
 
+  async compartilhar() {
+    const loading = await this.loadingCtrl.create({ message: 'Gerando imagem...' });
+    await loading.present();
 
-  dismiss() {
-    // fechar modal se precisar
+    try {
+      const canvas1 = this.graficoCanvas.nativeElement as HTMLCanvasElement;
+      const canvas2 = this.graficoPeriMetrosCanvas.nativeElement as HTMLCanvasElement;
+      const canvas3 = this.graficoForcaCanvas.nativeElement as HTMLCanvasElement;
+      const PAD = 16;
+      const W = Math.max(canvas1.width, canvas2.width, canvas3.width);
+
+      const output = document.createElement('canvas');
+      output.width = W;
+      output.height = canvas1.height + canvas2.height + canvas3.height + PAD * 4;
+
+      const ctx = output.getContext('2d')!;
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillRect(0, 0, output.width, output.height);
+      ctx.drawImage(canvas1, 0, PAD);
+      ctx.drawImage(canvas2, 0, canvas1.height + PAD * 2);
+      ctx.drawImage(canvas3, 0, canvas1.height + canvas2.height + PAD * 3);
+
+      const fileName = `comparacao-${Date.now()}.png`;
+
+      if (Capacitor.isNativePlatform()) {
+        const base64 = output.toDataURL('image/png').split(',')[1];
+        await Filesystem.writeFile({ path: fileName, data: base64, directory: Directory.Cache });
+        const { uri } = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
+        await Share.share({ title: 'Comparativo de Avaliações', files: [uri] });
+        await Filesystem.deleteFile({ path: fileName, directory: Directory.Cache });
+      } else {
+        await new Promise<void>((resolve) => {
+          output.toBlob((blob) => {
+            if (!blob) { resolve(); return; }
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            URL.revokeObjectURL(url);
+            resolve();
+          }, 'image/png');
+        });
+      }
+    } finally {
+      await loading.dismiss();
+    }
   }
+
+  dismiss() {}
 
   fechar() {
     this.modalCtrl.dismiss();

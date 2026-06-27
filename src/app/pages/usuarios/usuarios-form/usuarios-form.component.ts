@@ -1,12 +1,10 @@
 import { AlunosInterface } from './../shared/alunos.model';
 import { UsuariosService } from './../shared/usuarios.service';
-import { PhotoService } from './../../../shared/services/PhotoService.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { LoginService } from 'src/app/core/login/shared/login.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -29,8 +27,7 @@ export class UsuariosFormComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private route: ActivatedRoute,
-    private usuariosService: UsuariosService,
-    private loginService: LoginService
+    private usuariosService: UsuariosService
   ) {
     this.formData = this.fb.group({
       id: [''],
@@ -39,20 +36,15 @@ export class UsuariosFormComponent implements OnInit {
       telefone: [''],
       idade: [''],
       objetivos: [''],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      perfil: ['1', [Validators.required]],
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
-    // console.log('to no form');
     if (this.id) {
       this.isEdicao = true;
       this.tituloPagina = 'Edição de Usuário';
-      this.formData.controls['password'].disable();
       this.getUsuario();
     }
 
@@ -103,9 +95,6 @@ export class UsuariosFormComponent implements OnInit {
       telefone: usuario.telefone,
       idade: usuario.idade,
       objetivos: usuario.objetivos,
-      email: usuario.email,
-      password: '******',
-      perfil: usuario.perfil,
     });
   }
 
@@ -132,7 +121,6 @@ export class UsuariosFormComponent implements OnInit {
       .postAluno(this.formData.value)
       .then((res) => {
         this.loading.dismiss();
-        this.loginService.creatUser(this.formData.value);
         this.isToastOpen = true;
         this.colorHelp = 'sucess';
         this.messageToast = 'Cadastro Realizado com Sucesso';
@@ -149,11 +137,9 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   async putAlunos() {
-    await this.usuariosService;
-    let alunoSemSenha = this.formData.value;
-    delete alunoSemSenha.password;
+    let aluno = this.formData.value;
     this.usuariosService
-      .putAluno(alunoSemSenha, alunoSemSenha.id)
+      .putAluno(aluno, aluno.id)
       .then((res) => {
         this.loading.dismiss();
         this.isToastOpen = true;
@@ -169,10 +155,6 @@ export class UsuariosFormComponent implements OnInit {
         this.messageToast = 'Erro editar usuário';
         console.error(error);
       });
-  }
-
-  treinos() {
-    this.router.navigate([`admin/usuariotreinos/${this.id}`]);
   }
 
   cancelar() {

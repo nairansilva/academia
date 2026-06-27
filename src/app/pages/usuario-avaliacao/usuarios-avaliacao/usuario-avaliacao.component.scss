@@ -1,16 +1,23 @@
-.cancel-button{
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 50px;
-  --border-radius: 12px;
-  --box-shadow: none;
+.titulo-aluno {
+  color: var(--academia-accent);
+  font-weight: 600;
 }
 
-.comp-button{
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 50px;
-  --border-radius: 12px;
-  margin-top: 60px;
-  --box-shadow: none;
+.footer-toolbar {
+  --background: #1a1a1a;
+  --border-color: #2a2a2a;
+}
+
+.botoes-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 12px;
+
+  ion-button {
+    --border-radius: 8px;
+    --box-shadow: none;
+    height: 46px;
+    margin: 0;
+  }
 }

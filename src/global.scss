@@ -30,3 +30,60 @@
   --width: 100%;
   --border-radius: 0;
 }
+
+/* Academia — Dark Theme Global Overrides */
+ion-card {
+  --background: var(--academia-card-bg);
+  border-left: 3px solid var(--academia-card-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  margin: 8px 12px;
+}
+
+ion-toolbar {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  --border-color: #2a2a2a;
+}
+
+ion-tab-bar {
+  --background: #1a1a1a;
+  --border: 1px solid #2a2a2a;
+}
+
+ion-item {
+  --background: transparent;
+  --border-color: #2a2a2a;
+}
+
+ion-content {
+  --background: #111111;
+}
+
+
+
+/* Dark select overlay (popover — web default) */
+ion-select-popover ion-item {
+  --background: #1a1a1a;
+  --color: #cccccc;
+}
+
+/* Dark select overlay (alert — native default) */
+.sc-ion-alert-md-h,
+.sc-ion-alert-ios-h {
+  --background: #1a1a1a;
+}
+.alert-wrapper.sc-ion-alert-md,
+.alert-wrapper.sc-ion-alert-ios {
+  background: #1a1a1a !important;
+}
+.alert-radio-label,
+.alert-checkbox-label {
+  color: #cccccc !important;
+}
+.alert-title {
+  color: #ffffff !important;
+}
+.alert-button {
+  color: var(--academia-accent) !important;
+}

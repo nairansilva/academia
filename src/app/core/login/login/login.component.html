@@ -1,47 +1,25 @@
-teste
-
 <ion-content [fullscreen]="true" class="page">
-  <!-- <h1 class="welcome-text">Bem-Vindo</h1> -->
-
   <div class="container">
     <img
       class="logo"
       src="../../../../assets/imgs/logo.jpeg"
-      alt="The Wisconsin State Capitol building in Madison, WI at night"
+      alt="Logo Academia"
     />
-
-    <!-- <ion-input
-      class="ion-item"
-      label="Usuário"
-      label-placement="floating"
-      fill="outline"
-      placeholder="Informe o Usuário"
-    ></ion-input>
-
-    <ion-input
-      class="ion-item"
-      label="Senha"
-      label-placement="floating"
-      fill="outline"
-      placeholder="Informe a Senha"
-    ></ion-input> -->
 
     <div [formGroup]="formData">
       <ion-item class="ion-item">
         <ion-icon name="person" slot="start"></ion-icon>
-        <!-- <ion-label position="floating">Usuário</ion-label> -->
         <ion-input
           type="email"
           label="Usuário"
           label-placement="floating"
           formControlName="email"
-          errorText="Invalid email"
+          errorText="E-mail inválido"
         ></ion-input>
       </ion-item>
 
       <ion-item class="ion-item">
         <ion-icon name="lock-closed" slot="start"></ion-icon>
-        <!-- <ion-label position="floating" fill="solid">Senha</ion-label> -->
         <ion-input
           type="password"
           formControlName="password"
@@ -56,16 +34,14 @@ teste
       expand="block"
       (click)="login()"
       [disabled]="!formData.valid || desabilitaLogin"
-      >Login</ion-button
-    >
+    >Entrar</ion-button>
 
     <ion-label
       class="esqueci-senha"
       expand="block"
       color="primary"
       (click)="senha()"
-      >Esqueci a Senha</ion-label
-    >
+    >Esqueci a Senha</ion-label>
   </div>
 
   <ion-toast

@@ -44,6 +44,10 @@ export class UsuariosCardComponent implements OnInit {
 
   imagem = './../../../../assets/imgs/avatar-do-usuario.png';
 
+  get inicialNome(): string {
+    return this.usuario?.nome?.charAt(0)?.toUpperCase() ?? '?';
+  }
+
   ngOnInit() {
     this.usuariosService
       .getPictures(this.usuario.id)

@@ -67,6 +67,21 @@
       });
     }
 
+    getAllAlunos(): Observable<AlunosInterface[]> {
+      const ref = collection(this.firestore, this.dbName);
+      const q = query(ref, orderBy('nome'));
+      return new Observable(observer => {
+        getDocs(q).then(snap => {
+          observer.next(snap.docs.map(d => ({
+            ...(d.data() as AlunosInterface),
+            id: d.id,
+            __snapshot: d,
+          })));
+          observer.complete();
+        }).catch(e => observer.error(e));
+      });
+    }
+
 
     getByEmail(filtro = ''): Observable<AlunosInterface[]> {
       const usuarios = collection(this.firestore, this.dbName);

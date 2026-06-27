@@ -1,3 +1,14 @@
-ion-fab{
+ion-fab {
   margin-top: 100px;
+}
+
+.search-wrapper {
+  padding: 8px 12px;
+}
+
+.search-item {
+  --background: #1a1a1a;
+  --border-color: #2a2a2a;
+  --highlight-color-focused: var(--academia-accent);
+  border-radius: 8px;
 }

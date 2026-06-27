@@ -1,168 +1,100 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">{{tituloPagina}}</ion-title>
+    <ion-title>{{ tituloPagina }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<!-- <div *ngIf="isEdicao">
-  <ion-segment value="default">
-    <ion-segment-button value="default">
-      <ion-label>Dados Cadastrais</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="segment">
-      <ion-label>Acompanhamento</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-</div> -->
-<ion-content>
-  <div [formGroup]="formData">
-    <ion-item class="ion-item">
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formData">
+
+    <ion-item class="form-item">
       <ion-input
         type="text"
         label="Nome"
-        label-placement="floating"
+        label-placement="stacked"
         formControlName="nome"
+        placeholder="Nome completo"
       ></ion-input>
     </ion-item>
 
-    <ion-list>
-      <ion-item>
-        <ion-select
-          interface="popover"
-          placeholder="sexo"
-          formControlName="sexo"
-        >
-          <ion-select-option value="F" label="Feminino"
-            >Feminino</ion-select-option
-          >
-          <ion-select-option value="M" label="Masculino"
-            >Masculino</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-    </ion-list>
+    <ion-item class="form-item">
+      <ion-select
+        label="Sexo"
+        label-placement="stacked"
+        interface="popover"
+        formControlName="sexo"
+        placeholder="Selecionar"
+      >
+        <ion-select-option value="F">Feminino</ion-select-option>
+        <ion-select-option value="M">Masculino</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <ion-item class="ion-item">
+    <ion-item class="form-item">
       <ion-input
         type="tel"
+        label="Telefone"
+        label-placement="stacked"
         formControlName="telefone"
         maxlength="15"
-        label="Telefone"
-        label-placement="floating"
+        placeholder="(00) 00000-0000"
       ></ion-input>
     </ion-item>
 
-    <ion-item class="ion-item">
+    <ion-item class="form-item">
       <ion-input
-        type="tel"
-        maxlength="2"
-        formControlName="idade"
+        type="number"
         label="Idade"
-        label-placement="floating"
+        label-placement="stacked"
+        formControlName="idade"
+        maxlength="3"
+        placeholder="Ex: 30"
       ></ion-input>
     </ion-item>
 
-    <ion-item class="ion-item">
-      <ion-input
-        type="text"
+    <ion-item class="form-item">
+      <ion-textarea
+        label="Objetivos"
+        label-placement="stacked"
         formControlName="objetivos"
-        label="Objetivo"
-        label-placement="floating"
-      ></ion-input>
+        placeholder="Ex: Emagrecimento, hipertrofia..."
+        [autoGrow]="true"
+        rows="3"
+      ></ion-textarea>
     </ion-item>
 
-    <ion-item class="ion-item">
-      <ion-input
-        type="text"
-        formControlName="email"
-        label="E-Mail"
-        label-placement="floating"
-      ></ion-input>
-    </ion-item>
+  </form>
 
-    <ion-item class="ion-item">
-      <ion-input
-        [disabled]="true"
-        type="password"
-        formControlName="password"
-        label="Senha"
-        label-placement="floating"
-        minlength="6"
-        errorText="A senha deve possuir pelo menos 6 caracteres"
-      ></ion-input>
-    </ion-item>
-
-    <!-- <ion-icon name="lock-closed" slot="start"></ion-icon> -->
-    <ion-list>
-      <ion-item>
-        <ion-select
-          interface="popover"
-          placeholder="Tipo de Usuário"
-          formControlName="perfil"
-        >
-          <ion-select-option value="1" label="Usuário"
-            >Usuário</ion-select-option
-          >
-          <ion-select-option value="2" label="Administrador"
-            >Administrador</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-    </ion-list>
-  </div>
-
-  <div class="ion-text-end">
-    <ion-button
-      class="save.button"
-      expand="block"
-      (click)="salvar()"
-      color="primary"
-      [disabled]="!formData.valid"
-    >
-      <ion-icon slot="end" name="save"></ion-icon>
-      Salvar</ion-button
-    >
-    <!-- <ion-button
-      *ngIf="isEdicao"
-      class="treino.button"
-      expand="block"
-      (click)="treinos()"
-      color="secondary"
-    >
-      <ion-icon slot="end" name="barbell"></ion-icon>
-      Treinos</ion-button
-    > -->
-    <ion-button
-      class="cancel.button"
-      expand="block"
-      (click)="cancelar()"
-      color="danger"
-    >
-      <ion-icon slot="end" name="arrow-back"></ion-icon>
-      Cancelar</ion-button
-    >
-  </div>
-
-  <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end" size="small">
-    <ion-fab-button>
-      <ion-icon name="chevron-up-circle"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="salvar()">
-        <ion-icon name="save"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="barbell"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button (click)="cancelar()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab> -->
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="messageToast"
+    [color]="colorHelp"
+    [duration]="3000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>
-<!-- <ion-toast
-[isOpen]="isToastOpen"
-message="Usuário não autenticado"
-[color]="colorHelp"
-[duration]="5000"
-(didDismiss)="setOpen(false)"
-></ion-toast> -->
+
+<ion-footer>
+  <ion-toolbar class="footer-toolbar">
+    <div class="botoes">
+      <ion-button
+        expand="block"
+        color="primary"
+        (click)="salvar()"
+        [disabled]="!formData.valid"
+      >
+        <ion-icon slot="start" name="save"></ion-icon>
+        Salvar
+      </ion-button>
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="danger"
+        (click)="cancelar()"
+      >
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

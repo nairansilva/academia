@@ -1,35 +1,36 @@
-<ion-card>
-  <ion-card-header >
-    <ion-avatar>
-      <img alt="foto do aluno" [src]="imagem" />
-    </ion-avatar>
-    <ion-card-title (click)="abreAvaliacao()">{{ usuario.nome }}</ion-card-title>
+<ion-card class="aluno-card">
+  <ion-card-header>
+    <div class="avatar-wrapper">
+      <img
+        *ngIf="imagem !== './../../../../assets/imgs/avatar-do-usuario.png'"
+        [src]="imagem"
+        class="avatar-img"
+        alt="foto do aluno"
+      />
+      <div
+        *ngIf="imagem === './../../../../assets/imgs/avatar-do-usuario.png'"
+        class="avatar-inicial"
+      >{{ inicialNome }}</div>
+    </div>
+    <div class="header-info">
+      <ion-card-title>{{ usuario.nome }}</ion-card-title>
+      <ion-label class="telefone" (click)="openPhone()">
+        <ion-icon name="call"></ion-icon> {{ usuario.telefone }}
+      </ion-label>
+    </div>
   </ion-card-header>
-  <ion-card-content>
-    <ion-list>
-      <ion-item>
-        <ion-icon name="call" slot="start"></ion-icon>
-        <ion-label (click)="openPhone()">{{ usuario.telefone }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="mail" slot="start"></ion-icon>
-        <ion-label>{{ usuario.email }}</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
+
   <div class="acoes-botoes">
-    <ion-button fill="clear" color="primary" (click)="abreAvaliacao()">
-      <ion-icon slot="end" name="stats-chart"></ion-icon>
+    <ion-button class="btn-avaliacao" fill="clear" (click)="abreAvaliacao()">
+      <ion-icon slot="start" name="stats-chart"></ion-icon>
       Avaliação
     </ion-button>
-
-    <ion-button fill="clear" color="primary" (click)="editar()">
-      <ion-icon slot="end" name="build"></ion-icon>
+    <ion-button class="btn-editar" fill="clear" (click)="editar()">
+      <ion-icon slot="start" name="build"></ion-icon>
       Editar
     </ion-button>
-
-    <ion-button fill="clear" color="danger" (click)="excluir()">
-      <ion-icon slot="end" name="trash"></ion-icon>
+    <ion-button class="btn-excluir" fill="clear" (click)="excluir()">
+      <ion-icon slot="start" name="trash"></ion-icon>
       Excluir
     </ion-button>
   </div>

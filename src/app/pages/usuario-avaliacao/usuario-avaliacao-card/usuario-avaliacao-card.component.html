@@ -5,9 +5,9 @@
   <ion-card-content>
     <ion-list>
       <ion-item>
-        <ion-icon name="calendar" slot="start"></ion-icon>
+        <ion-icon name="calendar" slot="start" color="primary"></ion-icon>
         <ion-label
-          ><b>Data da Avaliação: </b>{{ avalicao.dataAvaliacao }}</ion-label
+          ><b>Data da Avaliação: </b>{{ avalicao.dataAvaliacao | date:'dd/MM/yyyy' }}</ion-label
         >
       </ion-item>
     </ion-list>
