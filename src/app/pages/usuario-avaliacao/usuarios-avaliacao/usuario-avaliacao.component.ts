@@ -75,7 +75,7 @@ export class UsuarioAvaliacaoComponent implements OnInit {
 
   async registroExcluido() {
     this.loading = await this.loadingCtrl.create({
-      message: 'Atualizando Usuários...',
+      message: 'Atualizando Alunos...',
     });
 
     this.loading.present();

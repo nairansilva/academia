@@ -65,7 +65,7 @@ export class UsuarioAvaliacaoCardComponent implements OnInit {
 
   async deletarAvaliacao() {
     const loading = await this.loadingCtrl.create({
-      message: 'Excluíndo Usuário...',
+      message: 'Excluindo Avaliação...',
     });
 
     loading.present();

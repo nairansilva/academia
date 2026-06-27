@@ -68,7 +68,7 @@ export class UsuariosCardComponent implements OnInit {
   async openPhone() {
     const alert = await this.alertController.create({
       header: 'Atenção',
-      message: 'Confirma Ligar para o usuário?',
+      message: 'Confirma ligar para o aluno?',
       buttons: [
         {
           text: 'Cancelar',
@@ -97,7 +97,7 @@ export class UsuariosCardComponent implements OnInit {
     const alert = await this.alertController.create({
       header: 'Atenção',
       message:
-        'Confirma Exclusão do Usuário? Uma vez exluído, não há como recuperá-lo.',
+        'Confirma exclusão do aluno? Uma vez excluído, não há como recuperá-lo.',
       buttons: this.alertButtons,
     });
 
@@ -106,7 +106,7 @@ export class UsuariosCardComponent implements OnInit {
 
   async deletarUsuario() {
     const loading = await this.loadingCtrl.create({
-      message: 'Excluíndo Usuário...',
+      message: 'Excluindo Aluno...',
     });
 
     loading.present();

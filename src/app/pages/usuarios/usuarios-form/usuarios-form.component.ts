@@ -18,7 +18,7 @@ export class UsuariosFormComponent implements OnInit {
   messageToast = '';
   id: string | null;
   isEdicao: boolean = false;
-  tituloPagina = 'Novo Usuário';
+  tituloPagina = 'Novo Aluno';
 
   loading: any;
 
@@ -44,7 +44,7 @@ export class UsuariosFormComponent implements OnInit {
   ngOnInit(): void {
     if (this.id) {
       this.isEdicao = true;
-      this.tituloPagina = 'Edição de Usuário';
+      this.tituloPagina = 'Edição de Aluno';
       this.getUsuario();
     }
 
@@ -77,7 +77,7 @@ export class UsuariosFormComponent implements OnInit {
 
   async getUsuario() {
     this.loading = await this.loadingCtrl.create({
-      message: 'Buscando Usuário...',
+      message: 'Buscando Aluno...',
     });
 
     this.loading.present();
@@ -131,7 +131,7 @@ export class UsuariosFormComponent implements OnInit {
         this.loading.dismiss();
         this.isToastOpen = true;
         this.colorHelp = 'danger';
-        this.messageToast = 'Erro ao cadastrar usuário';
+        this.messageToast = 'Erro ao cadastrar aluno';
         console.error(error);
       });
   }
@@ -152,7 +152,7 @@ export class UsuariosFormComponent implements OnInit {
         this.loading.dismiss();
         this.isToastOpen = true;
         this.colorHelp = 'danger';
-        this.messageToast = 'Erro editar usuário';
+        this.messageToast = 'Erro ao editar aluno';
         console.error(error);
       });
   }
