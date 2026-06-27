@@ -36,14 +36,14 @@ Atualizar:
 :root {
   --ion-background-color: #111111;
   --ion-card-background: #1a1a1a;
-  --ion-color-primary: #ff6b35;
+  --ion-color-primary: #52b788;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-danger: #eb445a;
   --ion-text-color: #ffffff;
   --ion-color-medium: #888888;
-  --academia-accent: #ff6b35;
-  --academia-accent-alt: #f53d3d;
-  --academia-card-border: #ff6b35;
+  --academia-accent: #52b788;        /* verde legível no escuro */
+  --academia-accent-dark: #2d6a4f;   /* verde original da academia — gradientes */
+  --academia-card-border: #52b788;
   --academia-card-bg: #1a1a1a;
 }
 ```
@@ -51,16 +51,16 @@ Atualizar:
 ### Login (`src/app/core/login/`)
 
 - Fundo `#111111`
-- Logo/título centralizado com gradiente `linear-gradient(135deg, #ff6b35, #f53d3d)`
-- `ion-input` com `--highlight-color: #ff6b35`
-- Botão "Entrar": background `#ff6b35`, texto branco, border-radius `8px`
-- Botão "Esqueci a senha": outline laranja
+- Logo/título centralizado com gradiente `linear-gradient(135deg, #52b788, #2d6a4f)`
+- `ion-input` com `--highlight-color: #52b788`
+- Botão "Entrar": background `#52b788`, texto branco, border-radius `8px`
+- Botão "Esqueci a senha": outline verde
 
 ### Menu / Tab Bar (`src/app/pages/menu/menu/`)
 
 - Tab bar: remover tabs comentadas de treinos/pagamentos do HTML definitivamente
 - Resultado: apenas aba "Alunos" (`admin/usuarios`) + botão "Sair"
-- Header com texto "Academia" em `#ff6b35`
+- Header com texto "Academia" em `#52b788`
 
 ## 3. Card do Aluno — Reescrita Visual
 
@@ -68,30 +68,30 @@ Atualizar:
 
 Estrutura HTML mantida (avatar + nome + telefone + 3 botões). Mudanças visuais:
 
-- `ion-card`: `background: #1a1a1a`, `border-left: 3px solid #ff6b35`, `border-radius: 12px`
-- Avatar: exibe inicial do nome com `background: linear-gradient(135deg, #ff6b35, #f53d3d)` quando não há foto; cai para foto do Firebase quando disponível
+- `ion-card`: `background: #1a1a1a`, `border-left: 3px solid #52b788`, `border-radius: 12px`
+- Avatar: exibe inicial do nome com `background: linear-gradient(135deg, #52b788, #2d6a4f)` quando não há foto; cai para foto do Firebase quando disponível
 - Email removido do card (reduz ruído — ainda salvo no cadastro)
 - Botões reestilizados:
-  - "Avaliação": background `#ff6b3522`, cor `#ff6b35`, border `1px solid #ff6b3544`, border-radius `20px`
+  - "Avaliação": background `#52b78822`, cor `#52b788`, border `1px solid #52b78844`, border-radius `20px`
   - "Editar": background `#ffffff11`, cor `#cccccc`, border `1px solid #333`
   - "Excluir": background `#eb445a22`, cor `#eb445a`, border `1px solid #eb445a44`
 
 ## 4. Telas de Avaliação
 
 **Lista** (`usuario-avaliacao.component`):
-- Header com nome do aluno em `#ff6b35`
-- `usuario-avaliacao-card`: herda `border-left: 3px solid #ff6b35`, data formatada em pt-BR (`dd/MM/yyyy`)
-- FAB "Nova Avaliação": cor primária (laranja)
-- Modo comparação: 2 cards selecionados ganham `border-color: #ff6b35` + opacidade pulsante; botão "Comparar" aparece no bottom
+- Header com nome do aluno em `#52b788`
+- `usuario-avaliacao-card`: herda `border-left: 3px solid #52b788`, data formatada em pt-BR (`dd/MM/yyyy`)
+- FAB "Nova Avaliação": cor primária (verde)
+- Modo comparação: 2 cards selecionados ganham `border-color: #52b788` + opacidade pulsante; botão "Comparar" aparece no bottom
 
 **Formulário** (`usuario-avaliacao-form.component`):
-- `ion-segment` com `--color-checked: #ff6b35`
-- `ion-input`: `--highlight-color: #ff6b35`
-- Botão "Salvar": laranja sólido
+- `ion-segment` com `--color-checked: #52b788`
+- `ion-input`: `--highlight-color: #52b788`
+- Botão "Salvar": verde sólido
 - Botão "Cancelar": outline vermelho
 
 **Gráficos Chart.js** (`usuario-avaliacao-pollock`, `usuario-avaliacao-comparacao`):
-- Dataset 1: `backgroundColor: 'rgba(255, 107, 53, 0.7)'` (laranja)
+- Dataset 1: `backgroundColor: 'rgba(255, 107, 53, 0.7)'` (verde)
 - Dataset 2: `backgroundColor: 'rgba(245, 61, 61, 0.7)'` (vermelho)
 - Grid e labels: `color: '#888888'`
 
